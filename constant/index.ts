@@ -231,6 +231,9 @@ export const ALL_RECIPES: Recipe[] = [
 ];
 
 export const FEATURED_RECIPES = ALL_RECIPES.slice(0, 4);
+export const POPULAR_RECIPES = ALL_RECIPES.filter(
+  (recipe: Recipe) => recipe.isPopular,
+).slice(0, 4);
 
 export const COLLECTIONS: CollectionRecipe[] = [
   {
