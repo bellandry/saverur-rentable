@@ -4,7 +4,7 @@ const Hero = () => {
   return (
     <section className="relative container mx-auto px-6 h-[90vh] flex items-center justify-center pt-24 pb-12">
       {/* Background container that acts as a frame */}
-      <div className="absolute inset-x-6 top-14 bottom-6 z-0 rounded-3xl overflow-hidden shadow-2xl">
+      <div className="absolute inset-x-6 top-24 bottom-6 z-0 rounded-3xl overflow-hidden shadow-2xl">
         <Image
           src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=1920"
           alt="Authentic Home Cooking"
@@ -17,7 +17,7 @@ const Hero = () => {
 
       <div className="container mx-auto px-6 relative z-10 text-center text-white">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-serif font-bold leading-[1.1] mb-8 drop-shadow-xl">
+          <h1 className="text-5xl italic md:text-7xl font-serif font-semibold leading-[1.1] mb-8 drop-shadow-xl">
             Cooking with Heart, <br /> Shared with Love
           </h1>
           <p className="text-xl md:text-2xl font-light text-white/90 mb-12 max-w-2xl mx-auto drop-shadow-lg">
