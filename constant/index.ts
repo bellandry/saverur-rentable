@@ -13,6 +13,7 @@ export const ALL_RECIPES: Recipe[] = [
   {
     id: "r1",
     title: "Rustic Sourdough Panzanella",
+    slug: "rustic-sourdough-panzanella",
     description:
       "A vibrant Tuscan classic featuring sun-ripened tomatoes and toasted artisanal sourdough cubes tossed in aged balsamic.",
     image:
@@ -45,6 +46,7 @@ export const ALL_RECIPES: Recipe[] = [
   {
     id: "r2",
     title: "Slow-Roasted Lamb with Herbs",
+    slug: "slow-roasted-lamb-with-herbs",
     description:
       "Tender, succulent leg of lamb marinated in a secret blend of rosemary, garlic, and wild mountain honey.",
     image:
@@ -75,6 +77,7 @@ export const ALL_RECIPES: Recipe[] = [
   {
     id: "r3",
     title: "Spring Pea & Mint Risotto",
+    slug: "spring-pea-mint-risotto",
     description:
       "Creamy Arborio rice infused with a delicate pea purée and finished with fresh garden mint and parmesan.",
     image:
@@ -102,6 +105,7 @@ export const ALL_RECIPES: Recipe[] = [
   {
     id: "r4",
     title: "Charred Heirloom Carrots",
+    slug: "charred-heirloom-carrots",
     description:
       "Caramelized garden carrots served with a zesty lemon-yogurt dip and toasted cumin seeds.",
     image:
