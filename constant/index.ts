@@ -134,7 +134,7 @@ export const ALL_RECIPES: Recipe[] = [
     ],
   },
   {
-    id: "r1",
+    id: "r5",
     title: "Rustic Sourdough Panzanella",
     slug: "rustic-sourdough-panzanella",
     description:
@@ -168,7 +168,7 @@ export const ALL_RECIPES: Recipe[] = [
     ],
   },
   {
-    id: "r2",
+    id: "r6",
     title: "Slow-Roasted Lamb with Herbs",
     slug: "slow-roasted-lamb-with-herbs",
     description:
@@ -200,7 +200,7 @@ export const ALL_RECIPES: Recipe[] = [
     ],
   },
   {
-    id: "r3",
+    id: "r7",
     title: "Spring Pea & Mint Risotto",
     slug: "spring-pea-mint-risotto",
     description:
@@ -230,7 +230,11 @@ export const ALL_RECIPES: Recipe[] = [
   },
 ];
 
-export const FEATURED_RECIPES = ALL_RECIPES.slice(0, 4);
+// take randomly 4 recipes for featured recipes
+export const FEATURED_RECIPES = ALL_RECIPES.sort(
+  () => Math.random() - 0.5,
+).slice(0, 4);
+export const LATEST_RECIPES = ALL_RECIPES.slice(0, 4);
 export const POPULAR_RECIPES = ALL_RECIPES.filter(
   (recipe: Recipe) => recipe.isPopular,
 ).slice(0, 4);
