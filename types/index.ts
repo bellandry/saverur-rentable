@@ -4,6 +4,7 @@ export interface Recipe {
   slug: string;
   description: string;
   image: string;
+  isPopular: boolean;
   additionalImages?: string[];
   prepTime: string;
   difficulty: "Easy" | "Intermediate" | "Advanced";
