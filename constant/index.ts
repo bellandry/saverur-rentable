@@ -1,4 +1,4 @@
-import { Recipe } from "@/types";
+import { CollectionRecipe, Recipe } from "@/types";
 
 export const CATEGORY_ITEMS = [
   { name: "Breakfast", icon: "🍳" },
@@ -132,3 +132,35 @@ export const ALL_RECIPES: Recipe[] = [
 ];
 
 export const FEATURED_RECIPES = ALL_RECIPES.slice(0, 4);
+
+export const COLLECTIONS: CollectionRecipe[] = [
+  {
+    id: "c1",
+    title: "Sunday Roast Traditions",
+    slug: "sunday-roast-traditions",
+    description:
+      "Relive the warmth of family weekends with our curated roast menus.",
+    image:
+      "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=800",
+    isLocked: false,
+  },
+  {
+    id: "c2",
+    title: "The Artisanal Baker Series",
+    slug: "the-artisanal-baker-series",
+    description:
+      "Master the art of fermentation and pastry with expert-led guides.",
+    image:
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=800",
+    isLocked: true,
+  },
+  {
+    id: "c3",
+    title: "Quick Mediterrenean Evenings",
+    slug: "quick-mediterrenean-evenings",
+    description: "Fresh, 20-minute meals that bring the coast to your kitchen.",
+    image:
+      "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&q=80&w=800",
+    isLocked: true,
+  },
+];

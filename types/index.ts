@@ -12,3 +12,12 @@ export interface Recipe {
   ingredients?: string[];
   instructions?: string[];
 }
+
+export interface CollectionRecipe {
+  id: string;
+  title: string;
+  slug: string;
+  description: string;
+  image: string;
+  isLocked: boolean;
+}
