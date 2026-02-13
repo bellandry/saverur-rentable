@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
-import { Recipe } from "../types";
+import { Recipe } from "../../types";
+import { Button } from "../ui/button";
 import QuickViewModal from "./quickview-modal";
-import { Button } from "./ui/button";
 
 interface RecipeCardProps {
   recipe: Recipe;

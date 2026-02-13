@@ -2,8 +2,8 @@
 
 import { FEATURED_RECIPES } from "@/constant";
 import Link from "next/link";
+import { Button } from "../ui/button";
 import RecipeCard from "./recipe-card";
-import { Button } from "./ui/button";
 
 const RecipeGrid = () => {
   return (

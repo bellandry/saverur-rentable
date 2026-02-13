@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Recipe } from "../types";
-import { Button } from "./ui/button";
+import { Recipe } from "../../types";
+import { Button } from "../ui/button";
 
 interface QuickViewModalProps {
   recipe: Recipe | null;
