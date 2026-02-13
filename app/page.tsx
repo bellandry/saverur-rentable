@@ -1,3 +1,4 @@
+import About from "@/components/about-chef";
 import Categories from "@/components/categories";
 import Collections from "@/components/collection";
 import Hero from "@/components/hero";
@@ -16,6 +17,7 @@ export default function Home() {
       <Collections />
       <RecipeGrid recipes={POPULAR_RECIPES} title="Most Popular Recipes" />
       <PopularRecipes popularRecipes={FEATURED_RECIPES} />
+      <About />
     </div>
   );
 }
