@@ -1,7 +1,8 @@
 import Categories from "@/components/categories";
+import Collections from "@/components/collection";
 import Hero from "@/components/hero";
 import Navbar from "@/components/navbar";
-import RecipeGrid from "@/components/recipes-grid";
+import RecipeGrid from "@/components/recipe/recipes-grid";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Hero />
       <Categories />
       <RecipeGrid />
+      <Collections />
     </div>
   );
 }
