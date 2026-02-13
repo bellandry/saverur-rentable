@@ -1,6 +1,7 @@
 import About from "@/components/about-chef";
 import Categories from "@/components/categories";
 import Collections from "@/components/collection";
+import Footer from "@/components/footer";
 import Hero from "@/components/hero";
 import Navbar from "@/components/navbar";
 import Newsletter from "@/components/newsletter";
@@ -20,6 +21,7 @@ export default function Home() {
       <PopularRecipes popularRecipes={FEATURED_RECIPES} />
       <About />
       <Newsletter />
+      <Footer />
     </div>
   );
 }
