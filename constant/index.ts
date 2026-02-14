@@ -145,6 +145,7 @@ export const ALL_RECIPES: Recipe[] = [
     difficulty: "Intermediate",
     isPremium: false,
     isPopular: true,
+    servings: 4,
     category: "main-dishes",
     ingredients: [
       "1.5 cups Arborio rice",
@@ -174,6 +175,7 @@ export const ALL_RECIPES: Recipe[] = [
     difficulty: "Easy",
     isPremium: true,
     isPopular: false,
+    servings: 4,
     category: "healthy",
     ingredients: [
       "1 bunch baby heirloom carrots",
@@ -240,6 +242,7 @@ export const ALL_RECIPES: Recipe[] = [
     isPremium: true,
     category: "breakfast",
     isPopular: true,
+    servings: 4,
     ingredients: [
       "4lb bone-in leg of lamb",
       "6 cloves garlic, slivered",

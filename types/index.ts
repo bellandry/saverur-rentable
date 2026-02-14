@@ -10,6 +10,7 @@ export interface Recipe {
   difficulty: "Easy" | "Intermediate" | "Advanced";
   isPremium: boolean;
   category: string;
+  servings?: number;
   ingredients?: string[];
   instructions?: string[];
 }
