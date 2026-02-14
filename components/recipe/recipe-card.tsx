@@ -77,25 +77,6 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
           >
             {recipe.title}
           </h3>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 text-stone-400 text-sm">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-              <span>{recipe.difficulty}</span>
-            </div>
-          </div>
         </div>
       </div>
 
