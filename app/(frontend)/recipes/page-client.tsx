@@ -163,6 +163,7 @@ const RecipesClient = () => {
               Aucune recette trouvée pour votre recherche.
             </p>
             <Button
+              variant={"ghost"}
               onClick={() => {
                 setSearchQuery("");
                 setSelectedCategory(null);
