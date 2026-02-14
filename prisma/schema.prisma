@@ -1,0 +1,150 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Tables better-auth
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  role       String?
+  banned     Boolean?  @default(false)
+  banReason  String?
+  banExpires DateTime?
+
+  @@map("user")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt    DateTime?
+  token        String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  ipAddress    String?
+  userAgent    String?
+
+  impersonatedBy String?
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@index([userId])
+  @@map("account")
+}
+
+// Collections métier
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  image       String
+  icon        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  recipes     Recipe[]
+}
+
+model Recipe {
+  id               String             @id @default(cuid())
+  title            String
+  slug             String             @unique
+  description      String
+  image            String
+  additionalImages String? // JSON array
+  prepTime         String
+  difficulty       String
+  isPremium        Boolean            @default(false)
+  isPopular        Boolean            @default(false)
+  servings         Int?
+  ingredients      String? // JSON array
+  instructions     String? // JSON array
+  categoryId       String
+  category         Category           @relation(fields: [categoryId], references: [id])
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  collections      RecipeCollection[]
+}
+
+model Collection {
+  id          String             @id @default(cuid())
+  title       String
+  slug        String             @unique
+  description String
+  image       String
+  isLocked    Boolean            @default(false)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  recipes     RecipeCollection[]
+}
+
+model RecipeCollection {
+  recipeId     String
+  collectionId String
+  recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@id([recipeId, collectionId])
+}
+
+model HomePageContent {
+  id                String   @id @default(cuid())
+  heroTitle         String
+  heroSubtitle      String
+  heroImage         String
+  aboutTitle        String?
+  aboutText         String?
+  aboutImage        String?
+  newsletterEnabled Boolean  @default(true)
+  updatedAt         DateTime @updatedAt
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
