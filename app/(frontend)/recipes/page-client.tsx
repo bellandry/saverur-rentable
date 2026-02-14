@@ -3,16 +3,16 @@
 import RecipeCard from "@/components/recipe/recipe-card";
 import { Button } from "@/components/ui/button";
 import { ALL_RECIPES, CATEGORIES } from "@/constant";
-import React, { useMemo, useState } from "react";
+import { useQueryState } from "nuqs";
+import { useMemo, useState } from "react";
 
 const ITEMS_PER_PAGE = 8;
 
 const RecipesClient = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string | null>(
-    null,
-  );
+  const [selectedCategory, setSelectedCategory] = useQueryState("category");
+  const [selectedDifficulty, setSelectedDifficulty] =
+    useQueryState("difficulty");
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
   const filteredRecipes = useMemo(() => {
@@ -26,11 +26,6 @@ const RecipesClient = () => {
         !selectedDifficulty || recipe.difficulty === selectedDifficulty;
       return matchesSearch && matchesCategory && matchesDifficulty;
     });
-  }, [searchQuery, selectedCategory, selectedDifficulty]);
-
-  // Reset visible count when filters change
-  React.useEffect(() => {
-    setVisibleCount(ITEMS_PER_PAGE);
   }, [searchQuery, selectedCategory, selectedDifficulty]);
 
   const displayedRecipes = filteredRecipes.slice(0, visibleCount);

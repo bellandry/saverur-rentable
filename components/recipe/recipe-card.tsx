@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 import { Recipe } from "../../types";
 import { Button } from "../ui/button";
@@ -75,7 +76,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
           <h3
             className={`text-xl mb-1 font-bold font-serif text-stone-900 group-hover:text-amber-700 transition-colors`}
           >
-            {recipe.title}
+            <Link href={`/recipes/${recipe.slug}`}>{recipe.title}</Link>
           </h3>
         </div>
       </div>
