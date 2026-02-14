@@ -1,4 +1,61 @@
-import { CollectionRecipe, Recipe } from "@/types";
+import { Category, CollectionRecipe, Recipe } from "@/types";
+
+export const CATEGORIES: Category[] = [
+  {
+    id: "1",
+    name: "Main Dishes",
+    slug: "main-dishes",
+    description:
+      "The heart of every meal. Discover hearty, soulful recipes designed to be the centerpiece of your dining table, from slow-cooked meats to artisanal pasta.",
+    image:
+      "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=1200",
+  },
+  {
+    id: "2",
+    name: "Desserts",
+    slug: "desserts",
+    description:
+      "A sweet conclusion to your culinary journey. Explore delicate pastries, rich chocolates, and fruit-forward treats that celebrate the joy of baking.",
+    image:
+      "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&q=80&w=1200",
+  },
+  {
+    id: "3",
+    name: "Healthy",
+    slug: "healthy",
+    description:
+      "Nourishment that feels like an indulgence. Fresh, seasonal ingredients brought together in vibrant bowls and light plates that fuel both body and spirit.",
+    image:
+      "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=1200",
+  },
+  {
+    id: "4",
+    name: "Quick Meals",
+    slug: "quick-meals",
+    description:
+      "Authentic flavor, prepared with efficiency. For the busy home cook who refuses to compromise on quality, even when time is of the essence.",
+    image:
+      "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=1200",
+  },
+  {
+    id: "5",
+    name: "World Cuisine",
+    slug: "world-cuisine",
+    description:
+      "A passport for your palate. Authentic recipes gathered from corners of the globe, bringing the spices and stories of far-off places to your kitchen.",
+    image:
+      "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=1200",
+  },
+  {
+    id: "6",
+    name: "Breakfast",
+    slug: "breakfast",
+    description:
+      "The quiet beauty of the morning. Savor slow starts with recipes that turn the first meal of the day into a ritual of warmth and preparation.",
+    image:
+      "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&q=80&w=1200",
+  },
+];
 
 export const CATEGORY_ITEMS = [
   { name: "Breakfast", icon: "🍳" },
@@ -25,7 +82,7 @@ export const ALL_RECIPES: Recipe[] = [
     prepTime: "20 min",
     difficulty: "Easy",
     isPremium: true,
-    category: "Healthy",
+    category: "healthy",
     isPopular: true,
     ingredients: [
       "4 cups cubed day-old sourdough",
@@ -58,7 +115,7 @@ export const ALL_RECIPES: Recipe[] = [
     prepTime: "3 hrs",
     difficulty: "Advanced",
     isPremium: true,
-    category: "Main Dishes",
+    category: "main-dishes",
     isPopular: true,
     ingredients: [
       "4lb bone-in leg of lamb",
@@ -88,7 +145,7 @@ export const ALL_RECIPES: Recipe[] = [
     difficulty: "Intermediate",
     isPremium: false,
     isPopular: true,
-    category: "Main Dishes",
+    category: "main-dishes",
     ingredients: [
       "1.5 cups Arborio rice",
       "1 cup fresh spring peas",
@@ -117,7 +174,7 @@ export const ALL_RECIPES: Recipe[] = [
     difficulty: "Easy",
     isPremium: true,
     isPopular: false,
-    category: "Healthy",
+    category: "healthy",
     ingredients: [
       "1 bunch baby heirloom carrots",
       "1 cup Greek yogurt",
@@ -148,7 +205,7 @@ export const ALL_RECIPES: Recipe[] = [
     prepTime: "20 min",
     difficulty: "Easy",
     isPremium: true,
-    category: "Healthy",
+    category: "quick-meals",
     isPopular: true,
     ingredients: [
       "4 cups cubed day-old sourdough",
@@ -181,7 +238,7 @@ export const ALL_RECIPES: Recipe[] = [
     prepTime: "3 hrs",
     difficulty: "Advanced",
     isPremium: true,
-    category: "Main Dishes",
+    category: "breakfast",
     isPopular: true,
     ingredients: [
       "4lb bone-in leg of lamb",

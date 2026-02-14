@@ -22,3 +22,12 @@ export interface CollectionRecipe {
   image: string;
   isLocked: boolean;
 }
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  image: string;
+  icon?: string;
+}
