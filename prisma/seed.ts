@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { ALL_RECIPES, CATEGORIES, COLLECTIONS } from "../constant/index";
+import { ALL_RECIPES, CATEGORIES } from "../constant/index";
 
 const prisma = new PrismaClient();
 
@@ -7,9 +7,7 @@ async function main() {
   console.log("🌱 Début du seed...");
 
   // Nettoyer les données existantes
-  await prisma.recipeCollection.deleteMany();
   await prisma.recipe.deleteMany();
-  await prisma.collection.deleteMany();
   await prisma.category.deleteMany();
   await prisma.homePageContent.deleteMany();
   await prisma.user.deleteMany();
@@ -70,6 +68,8 @@ async function main() {
         difficulty: recipe.difficulty,
         isPremium: recipe.isPremium,
         isPopular: recipe.isPopular || false,
+        isFeatured: recipe.isFeatured || false,
+        isInCollection: recipe.isInCollection || false,
         servings: recipe.servings,
         ingredients: recipe.ingredients
           ? JSON.stringify(recipe.ingredients)
@@ -85,23 +85,6 @@ async function main() {
   }
 
   console.log(`✅ ${createdRecipes.length} recettes créées`);
-
-  // Créer les collections
-  console.log("📚 Création des collections...");
-
-  for (const coll of COLLECTIONS) {
-    await prisma.collection.create({
-      data: {
-        title: coll.title,
-        slug: coll.slug,
-        description: coll.description,
-        image: coll.image,
-        isLocked: coll.isLocked,
-      },
-    });
-  }
-
-  console.log(`✅ ${COLLECTIONS.length} collections créées`);
 
   // Créer le contenu de la page d'accueil
   console.log("🏠 Création du contenu de la page d'accueil...");
@@ -131,7 +114,7 @@ async function main() {
     data: {
       email: "admin@saveur-rentable.com",
       name: "Administrateur",
-      emailVerified: new Date(),
+      emailVerified: true,
     },
   });
 
