@@ -14,10 +14,11 @@ export interface Recipe {
   cookTime?: string;
   difficulty: string | "Advanced";
   isPremium: boolean;
+  price?: number | null;
   category: Category;
   servings: number | null;
   ingredients?: string[];
   instructions?: string[];
-  tips?: string;
-  nutritionInfo?: string;
+  tips?: string | null;
+  nutritionInfo?: string | null;
 }

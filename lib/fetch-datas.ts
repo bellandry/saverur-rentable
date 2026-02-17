@@ -79,6 +79,7 @@ export async function transformRecipe(
     instructions: prismaRecipe.instructions
       ? JSON.parse(prismaRecipe.instructions)
       : [],
+    price: prismaRecipe.price,
   };
 }
 
