@@ -1,18 +1,32 @@
 "use client";
 
+import { getNewsletterData } from "@/lib/fetch-datas";
+import { useEffect, useState } from "react";
+
 const Newsletter = () => {
+  const [newsletterData, setNewsletterData] = useState<{
+    newsletterTitle: string;
+    newsletterSubtitle: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const fetchNewsletterData = async () => {
+      const data = await getNewsletterData();
+      setNewsletterData(data);
+    };
+    fetchNewsletterData();
+  }, []);
+
   return (
     <section className="py-32 bg-sage/10 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row border border-beige/50">
           <div className="md:w-1/2 p-12 space-y-6 bg-beige/10">
             <h2 className="text-4xl font-serif text-darkBrown">
-              Rejoignez la table{" "}
-              <span className="italic">Saveurs & Rentables</span>
+              {newsletterData?.newsletterTitle}
             </h2>
             <p className="text-darkBrown/60 font-light leading-relaxed">
-              Accédez à nos archives premium, recevez des menus hebdomadaires
-              personnalisés et participez à nos masterclasses mensuelles.
+              {newsletterData?.newsletterSubtitle}
             </p>
             <ul className="space-y-3">
               {[
