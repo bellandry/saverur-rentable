@@ -14,6 +14,15 @@ export const auth = betterAuth({
     expiresIn: 60 * 60 * 24 * 7, // 7 jours
     updateAge: 60 * 60 * 24, // 1 jour
   },
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        required: false,
+        defaultValue: "user",
+      },
+    },
+  },
   plugins: [admin()],
   databaseHooks: {
     user: {
@@ -26,12 +35,10 @@ export const auth = betterAuth({
             return {
               data: {
                 ...user,
-                role: "admin", // Promote the first user
+                role: "admin",
               },
             };
           }
-
-          // Return user data as-is for subsequent users
           return {
             data: user,
           };
