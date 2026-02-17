@@ -28,6 +28,8 @@ interface Recipe {
   };
   isPremium: boolean;
   isPopular: boolean;
+  isFeatured: boolean;
+  isInCollection: boolean;
   createdAt: string;
 }
 
@@ -176,6 +178,16 @@ export default function RecipesPage() {
                   </td>
                   <td className="p-4">
                     <div className="flex flex-wrap gap-2">
+                      {recipe.isFeatured && (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          Vedette
+                        </span>
+                      )}
+                      {recipe.isInCollection && (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                          Collection
+                        </span>
+                      )}
                       {recipe.isPopular && (
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-terracotta/20 text-terracotta">
                           Populaire

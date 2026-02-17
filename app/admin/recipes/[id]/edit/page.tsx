@@ -12,11 +12,6 @@ interface Category {
   name: string;
 }
 
-interface Collection {
-  id: string;
-  title: string;
-}
-
 export default function EditRecipePage() {
   const params = useParams();
   const router = useRouter();
@@ -25,7 +20,6 @@ export default function EditRecipePage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [collections, setCollections] = useState<Collection[]>([]);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -42,7 +36,10 @@ export default function EditRecipePage() {
     instructions: [""],
     tips: "",
     nutritionInfo: "",
-    selectedCollections: [] as string[],
+    isPremium: false,
+    isPopular: false,
+    isFeatured: false,
+    isInCollection: false,
   });
 
   useEffect(() => {
@@ -58,31 +55,21 @@ export default function EditRecipePage() {
       const recipeRes = await fetch(`/api/admin/recipes/${recipeId}`);
       const recipe = await recipeRes.json();
 
-      console.log("Recipe data from API:", recipe);
-
       // Fetch categories
       const categoriesRes = await fetch("/api/categories");
       const categoriesData = await categoriesRes.json();
       setCategories(categoriesData);
-
-      // Fetch collections
-      const collectionsRes = await fetch("/api/collections");
-      const collectionsData = await collectionsRes.json();
-      setCollections(collectionsData);
 
       // Parse JSON fields
       const parseJsonField = (field: string | null | undefined): string[] => {
         if (typeof field === "string") {
           try {
             const parsed = JSON.parse(field);
-            console.log("Parsed field:", field, "=>", parsed);
             return parsed;
           } catch {
-            console.log("Failed to parse field:", field);
             return [];
           }
         }
-        console.log("Field is not a string:", field);
         return [];
       };
 
@@ -112,13 +99,12 @@ export default function EditRecipePage() {
         instructions: parseJsonField(recipe.instructions),
         tips: recipe.tips || "",
         nutritionInfo: recipe.nutritionInfo || "",
-        selectedCollections:
-          recipe.collections?.map(
-            (c: { collectionId: string }) => c.collectionId,
-          ) || [],
+        isPremium: recipe.isPremium || false,
+        isPopular: recipe.isPopular || false,
+        isFeatured: recipe.isFeatured || false,
+        isInCollection: recipe.isInCollection || false,
       };
 
-      console.log("Form data to set:", formDataToSet);
       setFormData(formDataToSet);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -162,7 +148,10 @@ export default function EditRecipePage() {
           instructions: formData.instructions.filter((i) => i.trim()),
           tips: formData.tips || null,
           nutritionInfo: formData.nutritionInfo || null,
-          collections: formData.selectedCollections,
+          isPremium: formData.isPremium,
+          isPopular: formData.isPopular,
+          isFeatured: formData.isFeatured,
+          isInCollection: formData.isInCollection,
         }),
       });
 
@@ -236,15 +225,6 @@ export default function EditRecipePage() {
     setFormData((prev) => ({
       ...prev,
       additionalImages: prev.additionalImages.filter((_, i) => i !== index),
-    }));
-  };
-
-  const toggleCollection = (collectionId: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      selectedCollections: prev.selectedCollections.includes(collectionId)
-        ? prev.selectedCollections.filter((id) => id !== collectionId)
-        : [...prev.selectedCollections, collectionId],
     }));
   };
 
@@ -534,26 +514,77 @@ export default function EditRecipePage() {
           </div>
         </div>
 
-        {/* Collections */}
+        {/* Status Flags */}
         <div className="bg-white rounded-xl shadow-sm p-6">
           <h2 className="text-xl font-serif font-bold text-darkBrown mb-4">
-            Collections
+            Statuts de la recette
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {collections.map((collection) => (
-              <label
-                key={collection.id}
-                className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-terracotta transition"
-              >
-                <input
-                  type="checkbox"
-                  checked={formData.selectedCollections.includes(collection.id)}
-                  onChange={() => toggleCollection(collection.id)}
-                  className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
-                />
-                <span className="text-gray-700">{collection.title}</span>
-              </label>
-            ))}
+          <div className="flex gap-6 flex-wrap">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.isPremium}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isPremium: e.target.checked,
+                  }))
+                }
+                className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
+              />
+              <span className="text-gray-700 font-medium">Recette Premium</span>
+            </label>
+
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.isPopular}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isPopular: e.target.checked,
+                  }))
+                }
+                className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
+              />
+              <span className="text-gray-700 font-medium">
+                Recette Populaire
+              </span>
+            </label>
+
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.isFeatured}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isFeatured: e.target.checked,
+                  }))
+                }
+                className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
+              />
+              <span className="text-gray-700 font-medium">
+                Recette Mise en Avant (Featured)
+              </span>
+            </label>
+
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.isInCollection}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isInCollection: e.target.checked,
+                  }))
+                }
+                className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
+              />
+              <span className="text-gray-700 font-medium">
+                Afficher dans Collections (max 3)
+              </span>
+            </label>
           </div>
         </div>
 
