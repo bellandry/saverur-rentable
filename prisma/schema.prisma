@@ -97,6 +97,9 @@ model Recipe {
   isPopular        Boolean  @default(false)
   isFeatured       Boolean  @default(false)
   isInCollection   Boolean  @default(false)
+  cookTime         String   @default("30 minutes")
+  tips             String?
+  nutritionInfo    String?
   servings         Int?
   ingredients      String? // JSON array
   instructions     String? // JSON array
