@@ -16,16 +16,7 @@ export async function GET(request: Request) {
     }
 
     if (featured === "true") {
-      // Pour les recettes featured, on prend un échantillon aléatoire
-      const allRecipes = await prisma.recipe.findMany({
-        include: { category: true },
-        orderBy: { createdAt: "desc" },
-      });
-
-      const shuffled = allRecipes.sort(() => 0.5 - Math.random());
-      const selected = shuffled.slice(0, limit ? parseInt(limit) : 4);
-
-      return NextResponse.json(selected);
+      where.isFeatured = true;
     }
 
     if (popular === "true") {

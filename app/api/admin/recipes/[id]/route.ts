@@ -11,11 +11,6 @@ export async function GET(
       where: { id },
       include: {
         category: true,
-        collections: {
-          include: {
-            collection: true,
-          },
-        },
       },
     });
 
@@ -43,19 +38,16 @@ export async function PUT(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { collections, ...recipeData } = body;
-
-    // Serialize JSON fields
     const dataToUpdate = {
-      ...recipeData,
-      ingredients: recipeData.ingredients
-        ? JSON.stringify(recipeData.ingredients)
+      ...body,
+      ingredients: body.ingredients
+        ? JSON.stringify(body.ingredients)
         : undefined,
-      instructions: recipeData.instructions
-        ? JSON.stringify(recipeData.instructions)
+      instructions: body.instructions
+        ? JSON.stringify(body.instructions)
         : undefined,
-      additionalImages: recipeData.additionalImages
-        ? JSON.stringify(recipeData.additionalImages)
+      additionalImages: body.additionalImages
+        ? JSON.stringify(body.additionalImages)
         : undefined,
     };
 
@@ -64,24 +56,6 @@ export async function PUT(
       where: { id },
       data: dataToUpdate,
     });
-
-    // Update collections if provided
-    if (collections) {
-      // Delete existing collection relations
-      await prisma.recipeCollection.deleteMany({
-        where: { recipeId: id },
-      });
-
-      // Create new collection relations
-      if (collections.length > 0) {
-        await prisma.recipeCollection.createMany({
-          data: collections.map((collectionId: string) => ({
-            recipeId: id,
-            collectionId,
-          })),
-        });
-      }
-    }
 
     return NextResponse.json(recipe);
   } catch (error) {

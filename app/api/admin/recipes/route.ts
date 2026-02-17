@@ -12,6 +12,8 @@ const recipeSchema = z.object({
   difficulty: z.enum(["Easy", "Intermediate", "Advanced"]),
   isPremium: z.boolean(),
   isPopular: z.boolean(),
+  isFeatured: z.boolean(),
+  isInCollection: z.boolean(),
   servings: z.number().optional(),
   ingredients: z.array(z.string()),
   instructions: z.array(z.string()),
