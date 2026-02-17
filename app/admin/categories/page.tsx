@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit, Plus, Trash2 } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -212,10 +213,11 @@ export default function CategoriesPage() {
               className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition"
             >
               <div className="relative h-48">
-                <img
+                <Image
                   src={category.image}
                   alt={category.name}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
                 {category.icon && (
                   <div className="absolute top-4 right-4 text-4xl">
@@ -271,6 +273,7 @@ export default function CategoriesPage() {
             <div>
               <Label>Image *</Label>
               <ImageUpload
+                label=""
                 value={watchImage}
                 onChange={(url) => setValue("image", url)}
               />
@@ -357,8 +360,8 @@ export default function CategoriesPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmer la suppression</AlertDialogTitle>
             <AlertDialogDescription>
-              Êtes-vous sûre de vouloir supprimer la catégorie "
-              {deleteConfirm?.name}" ? Cette action est irréversible.
+              Êtes-vous sûre de vouloir supprimer la catégorie &quot;
+              {deleteConfirm?.name}&quot; ? Cette action est irréversible.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

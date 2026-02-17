@@ -3,12 +3,13 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
+    const { slug } = await params;
     const recipe = await prisma.recipe.findUnique({
       where: {
-        slug: params.slug,
+        slug,
       },
       include: {
         category: true,
