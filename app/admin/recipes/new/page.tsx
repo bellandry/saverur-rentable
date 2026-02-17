@@ -35,6 +35,7 @@ export default function NewRecipePage() {
     tips: "",
     nutritionInfo: "",
     isPremium: false,
+    price: "",
     isPopular: false,
     isFeatured: false,
     isInCollection: false,
@@ -107,6 +108,7 @@ export default function NewRecipePage() {
           ingredients: formData.ingredients.filter((i) => i.trim()),
           instructions: formData.instructions.filter((i) => i.trim()),
           isPremium: formData.isPremium,
+          price: formData.isPremium ? parseFloat(formData.price) : 0,
           isPopular: formData.isPopular,
           isFeatured: formData.isFeatured,
           isInCollection: formData.isInCollection,
@@ -387,6 +389,29 @@ export default function NewRecipePage() {
                   Recette Premium
                 </span>
               </label>
+
+              {formData.isPremium && (
+                <div className="flex items-center gap-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Prix (€) *
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    required
+                    value={formData.price}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        price: e.target.value,
+                      }))
+                    }
+                    className="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
+                    placeholder="0.00"
+                  />
+                </div>
+              )}
 
               <label className="flex items-center gap-3 cursor-pointer">
                 <input

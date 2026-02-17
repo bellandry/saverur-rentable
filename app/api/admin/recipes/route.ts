@@ -18,6 +18,7 @@ const recipeSchema = z.object({
   ingredients: z.array(z.string()),
   instructions: z.array(z.string()),
   categoryId: z.string(),
+  price: z.number().nullable().optional(),
 });
 
 export async function POST(request: Request) {
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
     const recipe = await prisma.recipe.create({
       data: {
         ...data,
+        price: data.price ?? 0,
         additionalImages: data.additionalImages
           ? JSON.stringify(data.additionalImages)
           : null,
@@ -59,6 +61,7 @@ export async function PUT(request: Request) {
       where: { id },
       data: {
         ...validated,
+        price: validated.price ?? 0,
         additionalImages: validated.additionalImages
           ? JSON.stringify(validated.additionalImages)
           : null,
