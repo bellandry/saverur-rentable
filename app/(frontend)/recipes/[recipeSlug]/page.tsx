@@ -1,4 +1,4 @@
-import { ALL_RECIPES } from "@/constant";
+import { getRecipeBySlug } from "@/lib/fetch-datas";
 import { notFound } from "next/navigation";
 import { RecipeDetail } from "./page-client";
 
@@ -8,7 +8,7 @@ const RecipeDetailPage = async ({
   params: Promise<{ recipeSlug: string }>;
 }) => {
   const { recipeSlug } = await params;
-  const recipe = ALL_RECIPES.find((r) => r.slug === recipeSlug);
+  const recipe = await getRecipeBySlug(recipeSlug);
 
   if (!recipe) {
     notFound();

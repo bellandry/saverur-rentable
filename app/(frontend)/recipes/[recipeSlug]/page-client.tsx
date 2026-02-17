@@ -36,7 +36,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe }) => {
           href={`/recipes/?category=${recipe.category}`}
           className="hover:underline"
         >
-          {recipe.category}
+          {recipe.category.name}
         </Link>
         <ChevronRight className="text-terracotta size-4" />
         <span className="text-darkBrown font-medium">{recipe.title}</span>
@@ -76,7 +76,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe }) => {
         <div className="absolute bottom-12 left-6 right-6 md:left-16 md:right-16 z-10">
           <div className="flex flex-wrap items-center gap-3 mb-4">
             <span className="bg-amber-500 text-stone-900 px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-amber-500/20">
-              {recipe.category}
+              {recipe.category.name}
             </span>
             {recipe.isPremium && (
               <span className="bg-white/20 backdrop-blur-md text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/30 flex items-center gap-1.5">
@@ -263,7 +263,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe }) => {
               Tags:
             </p>
             <span className="px-3 py-1 bg-white border border-beige rounded-full text-sm text-darkBrown/60 hover:border-terracotta hover:text-terracotta transition-colors">
-              {recipe.category}
+              {recipe.category.name}
             </span>
             <span className="px-3 py-1 bg-white border border-beige rounded-full text-sm text-darkBrown/60 hover:border-terracotta hover:text-terracotta transition-colors">
               Artisanal
