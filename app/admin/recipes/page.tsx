@@ -92,7 +92,7 @@ export default function RecipesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col md:flex-row gap-4 mt:items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-serif font-bold text-darkBrown mb-2">
             Recettes

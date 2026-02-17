@@ -56,6 +56,9 @@ export async function getCategories() {
     where: {
       available: true,
     },
+    include: {
+      recipes: true,
+    },
   });
   return categories;
 }

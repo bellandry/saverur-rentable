@@ -104,7 +104,7 @@ export default function HomepageContentPage() {
   }
 
   return (
-    <div className="max-w-5xl">
+    <div className="max-w-5xl mx-auto">
       <Link
         href="/admin"
         className="inline-flex items-center gap-2 text-gray-600 hover:text-terracotta mb-6 transition"

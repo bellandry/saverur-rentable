@@ -182,8 +182,8 @@ export default function CategoriesPage() {
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
+    <div className="max-w-5xl mx-auto">
+      <div className="flex flex-col md:flex-row gap-4 md:items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-serif font-bold text-darkBrown mb-2">
             Catégories
@@ -197,7 +197,7 @@ export default function CategoriesPage() {
       </div>
 
       {/* Categories Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
           <div className="col-span-full text-center py-12 text-gray-500">
             Chargement...
@@ -212,12 +212,12 @@ export default function CategoriesPage() {
               key={category.id}
               className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition"
             >
-              <div className="relative h-48">
+              <div className="relative aspect-video">
                 <Image
                   src={category.image}
                   alt={category.name}
                   fill
-                  className="object-cover"
+                  className="object-cover bg-center"
                 />
                 {category.icon && (
                   <div className="absolute top-4 right-4 text-4xl">
@@ -225,11 +225,11 @@ export default function CategoriesPage() {
                   </div>
                 )}
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-serif font-bold text-darkBrown mb-2">
+              <div className="p-4 md:p-6">
+                <h3 className="text-lg md:text-xl font-serif font-bold text-darkBrown md:mb-2">
                   {category.name}
                 </h3>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                <p className="text-gray-600 text-sm md:text-base mb-4 line-clamp-2">
                   {category.description}
                 </p>
                 <div className="flex gap-2">

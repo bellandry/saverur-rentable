@@ -2,6 +2,7 @@
 
 import { authClient } from "@/lib/auth-client";
 import {
+  ArrowLeft,
   BookOpen,
   DollarSign,
   FolderOpen,
@@ -27,7 +28,7 @@ export default function AdminLayoutClient({
     { name: "Tableau de bord", href: "/admin", icon: Home },
     { name: "Recettes", href: "/admin/recipes", icon: BookOpen },
     { name: "Catégories", href: "/admin/categories", icon: FolderOpen },
-    { name: "Ventes", href: "/admin/payments", icon: DollarSign },
+    { name: "Paiements", href: "/admin/payments", icon: DollarSign },
     { name: "Page d'accueil", href: "/admin/homepage", icon: Settings },
   ];
 
@@ -40,7 +41,10 @@ export default function AdminLayoutClient({
     <div className="min-h-screen bg-gray-50">
       {/* Mobile menu button */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-darkBrown text-white px-4 py-3 flex items-center justify-between shadow-lg">
-        <h1 className="text-xl font-serif font-bold">Saveur Rentable</h1>
+        <Link href="/" className="flex items-center gap-2">
+          <Home className="size-4 mr-2 text-white" />
+          Accueil
+        </Link>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="p-2 rounded-lg hover:bg-white/10 transition"
@@ -71,15 +75,15 @@ export default function AdminLayoutClient({
         `}
       >
         <div className="flex flex-col h-full">
+          <Link href="/" className="flex items-center gap-2 px-4 pt-4">
+            <ArrowLeft className="size-4 mr-2 text-white" />
+            Retour à l&apos;accueil
+          </Link>
           {/* Logo - Hidden on mobile (shown in top bar) */}
-          <div className="hidden lg:block p-6 border-b border-white/10">
+          <div className="p-6 border-b border-white/10 mt-4 md:mt-0">
             <h1 className="text-2xl font-serif font-bold">Saveur Rentable</h1>
             <p className="text-sm text-white/60 mt-1">Administration</p>
           </div>
-
-          {/* Mobile header spacing */}
-          <div className="lg:hidden h-16" />
-
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
             {navigation.map((item) => {
