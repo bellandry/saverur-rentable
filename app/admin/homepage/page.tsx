@@ -155,6 +155,7 @@ export default function HomepageContentPage() {
                   setFormData((prev) => ({ ...prev, heroImage: url }))
                 }
                 label="Image d'arrière-plan *"
+                className="aspect-video w-full"
               />
 
               <div className="grid grid-cols-1 gap-4">

@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { Upload, X } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useState } from "react";
@@ -9,9 +10,15 @@ interface ImageUploadProps {
   value: string;
   onChange: (url: string) => void;
   label: string;
+  className?: string;
 }
 
-export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
+export function ImageUpload({
+  value,
+  onChange,
+  label,
+  className,
+}: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
 
   const onDrop = useCallback(
@@ -62,7 +69,7 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
       </label>
 
       {value ? (
-        <div className="relative">
+        <div className={cn("relative", className)}>
           <Image
             fill
             src={value}
