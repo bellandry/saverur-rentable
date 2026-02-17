@@ -1,6 +1,7 @@
 "use client";
 
-import { BookOpen, FolderOpen, Grid, Plus } from "lucide-react";
+import { Category, Purchase, Recipe } from "@prisma/client";
+import { BookOpen, CreditCard, Grid, Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -8,27 +9,31 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState({
     recipes: 0,
     categories: 0,
-    collections: 0,
+    purchases: 0,
+    revenue: 0,
   });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        const [recipesRes, categoriesRes, collectionsRes] = await Promise.all([
+        const [recipesRes, categoriesRes, purchasesRes] = await Promise.all([
           fetch("/api/recipes"),
           fetch("/api/categories"),
-          fetch("/api/collections"),
+          fetch("/api/purchases"),
         ]);
 
-        const recipes = await recipesRes.json();
-        const categories = await categoriesRes.json();
-        const collections = await collectionsRes.json();
+        const recipes = (await recipesRes.json()) as Recipe[];
+        const categories = (await categoriesRes.json()) as Category[];
+        const purchases = (await purchasesRes.json()) as Purchase[];
+
+        const totalRevenue = purchases.reduce((acc, p) => acc + p.amount, 0);
 
         setStats({
           recipes: recipes.length,
           categories: categories.length,
-          collections: collections.length,
+          purchases: purchases.length,
+          revenue: totalRevenue,
         });
       } catch (error) {
         console.error("Error fetching stats:", error);
@@ -56,11 +61,11 @@ export default function AdminDashboard() {
       href: "/admin/categories",
     },
     {
-      name: "Collections",
-      value: stats.collections,
-      icon: FolderOpen,
+      name: "Paiements",
+      value: `${stats.purchases} (${stats.revenue.toFixed(2)}€)`,
+      icon: CreditCard,
       color: "bg-darkBrown",
-      href: "/admin/collections",
+      href: "/admin/payments",
     },
   ];
 
@@ -71,7 +76,7 @@ export default function AdminDashboard() {
           Tableau de bord
         </h1>
         <p className="text-sm sm:text-base text-gray-600">
-          Bienvenue dans votre espace d&administration
+          Bienvenue dans votre espace d&apos;administration
         </p>
       </div>
 
@@ -119,12 +124,12 @@ export default function AdminDashboard() {
             </span>
           </Link>
           <Link
-            href="/admin/homepage"
-            className="flex items-center gap-3 p-3 sm:p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-sage hover:bg-sage/5 transition"
+            href="/admin/payments"
+            className="flex items-center gap-3 p-3 sm:p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-darkBrown hover:bg-darkBrown/5 transition"
           >
-            <Plus className="w-5 h-5 text-sage shrink-0" />
+            <CreditCard className="w-5 h-5 text-darkBrown shrink-0" />
             <span className="text-sm sm:text-base font-medium text-gray-700">
-              Modifier la page d&apos;accueil
+              Voir les derniers paiements
             </span>
           </Link>
         </div>
@@ -143,7 +148,7 @@ export default function AdminDashboard() {
             • <strong>Catégories</strong> : Organisez vos recettes par thème
           </li>
           <li>
-            • <strong>Collections</strong> : Créez des groupes de recettes
+            • <strong>Paiements</strong> : Suivez vos ventes et revenus
           </li>
           <li>
             • <strong>Page d&apos;accueil</strong> : Personnalisez le contenu de
