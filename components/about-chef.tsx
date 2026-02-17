@@ -2,7 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
-const About = () => {
+interface AboutProps {
+  title: string;
+  text: string;
+  image: string;
+  buttonText: string;
+  buttonLink: string;
+}
+
+const About = ({ title, text, image, buttonText, buttonLink }: AboutProps) => {
   return (
     <section className="py-32 bg-cream overflow-hidden">
       <div className="container mx-auto px-6">
@@ -11,8 +19,8 @@ const About = () => {
             {/* Circular image as seen in the image */}
             <div className="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-8 border-white scale-100 shadow-2xl transition-transform duration-500 group-hover:scale-105">
               <Image
-                src="https://images.unsplash.com/photo-1726749135864-5a32a2d613a7?q=80&w=764&auto=format&fit=crop"
-                alt="Chef Elena Vance"
+                src={image}
+                alt={title}
                 fill
                 className="w-full h-full object-cover rounded-full"
               />
@@ -40,20 +48,17 @@ const About = () => {
               Meet the Chef
             </span>
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-darkBrown leading-tight">
-              Chef Elena Vance
+              {title}
             </h2>
             <p className="text-xl md:text-2xl font-light italic text-darkBrown/70 leading-relaxed">
-              &quot;Cooking isn&apos;t just about the food; it&apos;s about the
-              stories we tell across the dining table. I&apos;ve spent twenty
-              years traveling the Mediterranean to bring these authentic flavors
-              into your home kitchen.&quot;
+              {text}
             </p>
             <div className="pt-6">
               <Button
                 asChild
                 className="bg-darkBrown text-white px-10 py-4 rounded-sm text-sm font-bold hover:bg-terracotta transition-all shadow-lg uppercase tracking-widest"
               >
-                <Link href="/about">Read My Story</Link>
+                <Link href={buttonLink}>{buttonText}</Link>
               </Button>
             </div>
           </div>

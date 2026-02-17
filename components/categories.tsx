@@ -1,6 +1,10 @@
-import { CATEGORY_ITEMS } from "@/constant";
+import { Category } from "@prisma/client";
 
-const Categories = () => {
+interface CategoriesProps {
+  categories: Category[] | [];
+}
+
+const Categories = ({ categories }: CategoriesProps) => {
   return (
     <section className="py-12">
       <div className="container mx-auto px-6">
@@ -9,9 +13,9 @@ const Categories = () => {
             <span className="text-lg">🍴</span>
             <span>All Recipes</span>
           </button>
-          {CATEGORY_ITEMS.map((cat) => (
+          {categories?.map((cat) => (
             <button
-              key={cat.name}
+              key={cat.id}
               className="flex items-center space-x-3 px-6 py-3 rounded-full text-xs font-bold transition-all uppercase tracking-widest whitespace-nowrap bg-beige/30 text-darkBrown/60 hover:bg-beige/50 hover:text-darkBrown"
             >
               <span className="text-lg">{cat.icon}</span>

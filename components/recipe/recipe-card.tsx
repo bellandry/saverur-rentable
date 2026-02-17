@@ -67,7 +67,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         <div className={"p-4"}>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-amber-700 text-xs font-semibold tracking-wider uppercase">
-              {recipe.category}
+              {typeof recipe.category === "string"
+                ? recipe.category
+                : recipe.category.name}
             </span>
             <span className="text-stone-300">•</span>
             <span className="text-stone-500 text-xs">{recipe.prepTime}</span>
