@@ -1,7 +1,9 @@
-import { Category } from "@prisma/client";
+import { Category, Recipe } from "@prisma/client";
+import Image from "next/image";
+import Link from "next/link";
 
 interface CategoriesProps {
-  categories: Category[] | [];
+  categories: (Category & { recipes: Recipe[] })[];
 }
 
 const Categories = ({ categories }: CategoriesProps) => {
@@ -14,13 +16,27 @@ const Categories = ({ categories }: CategoriesProps) => {
             <span>All Recipes</span>
           </button>
           {categories?.map((cat) => (
-            <button
+            <Link
+              href={`/recipes?category=${cat.slug}`}
               key={cat.id}
-              className="flex items-center space-x-3 px-6 py-3 rounded-full text-xs font-bold transition-all uppercase tracking-widest whitespace-nowrap bg-beige/30 text-darkBrown/60 hover:bg-beige/50 hover:text-darkBrown"
+              className="flex items-center space-x-3 px-3 pr-4 py-3 rounded-full text-xs font-bold transition-all uppercase tracking-widest whitespace-nowrap bg-beige/30 text-darkBrown/60 hover:bg-beige/50 hover:text-darkBrown"
             >
-              <span className="text-lg">{cat.icon}</span>
-              <span>{cat.name}</span>
-            </button>
+              <div className="text-lg aspect-square relative w-12 h-12 rounded-full">
+                <Image
+                  src={cat.image}
+                  alt={cat.name}
+                  fill
+                  className="object-cover rounded-full"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span>{cat.name}</span>
+                {/* display number of recipes in category */}
+                <span className="lowercase text-darkBrown/40">
+                  {cat.recipes?.length} Recettes
+                </span>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
