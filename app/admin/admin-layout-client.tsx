@@ -1,7 +1,9 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import {
   BookOpen,
+  DollarSign,
   FolderOpen,
   Home,
   LogOut,
@@ -25,11 +27,12 @@ export default function AdminLayoutClient({
     { name: "Tableau de bord", href: "/admin", icon: Home },
     { name: "Recettes", href: "/admin/recipes", icon: BookOpen },
     { name: "Catégories", href: "/admin/categories", icon: FolderOpen },
+    { name: "Ventes", href: "/admin/payments", icon: DollarSign },
     { name: "Page d'accueil", href: "/admin/homepage", icon: Settings },
   ];
 
   const handleLogout = async () => {
-    await fetch("/api/auth/sign-out", { method: "POST" });
+    await authClient.signOut();
     window.location.href = "/login";
   };
 

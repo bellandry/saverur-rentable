@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signIn } from "@/lib/auth-client";
+import { User } from "@/lib/auth-types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -24,7 +25,6 @@ export default function AdminLoginClient() {
       const res = await signIn.email({
         email,
         password,
-        callbackURL: "/admin",
       });
 
       if (res.error) {
@@ -32,7 +32,11 @@ export default function AdminLoginClient() {
         toast.error(errorMessage);
       } else {
         toast.success("Connexion réussie !");
-        router.push("/admin");
+        if ((res.data.user as User).role === "admin") {
+          router.push("/admin");
+        } else {
+          router.push("/profile/recipes");
+        }
       }
     } catch (err) {
       console.log(err);
