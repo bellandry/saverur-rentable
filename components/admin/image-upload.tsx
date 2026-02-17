@@ -19,21 +19,16 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
       const file = acceptedFiles[0];
       if (!file) return;
 
-      console.log("File selected for upload:", file.name, file.size, file.type);
       setUploading(true);
       try {
         const formData = new FormData();
         formData.append("file", file);
-
-        console.log("Sending upload request...");
         const response = await fetch("/api/admin/upload", {
           method: "POST",
           body: formData,
         });
 
-        console.log("Upload response status:", response.status);
         const data = await response.json();
-        console.log("Upload response data:", data);
 
         if (!response.ok) {
           throw new Error(data.error || "Upload failed");
