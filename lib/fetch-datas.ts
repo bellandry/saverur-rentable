@@ -1,7 +1,7 @@
 "use server";
 
 import { Recipe } from "@/types";
-import { Recipe as PrismaRecipe } from "@prisma/client";
+import { Recipe as PrismaRecipe, Purchase } from "@prisma/client";
 import { prisma } from "./prisma";
 
 export async function getHomepageContent() {
@@ -137,4 +137,54 @@ export async function getNewsletterData(): Promise<{
     },
   });
   return newsletter;
+}
+
+export async function getPurchasedRecipes(userId: string): Promise<Recipe[]> {
+  const purchases = await prisma.purchase.findMany({
+    where: { userId },
+    include: {
+      recipe: {
+        include: {
+          category: true,
+        },
+      },
+    },
+  });
+
+  return Promise.all(purchases.map((p) => transformRecipe(p.recipe)));
+}
+
+export type PurchaseWithDetails = Purchase & {
+  user: {
+    name: string | null;
+    email: string;
+  };
+  recipe: {
+    title: string;
+    slug: string;
+  };
+};
+
+export async function getAllPurchases(): Promise<PurchaseWithDetails[]> {
+  const purchases = await prisma.purchase.findMany({
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+      recipe: {
+        select: {
+          title: true,
+          slug: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return purchases as PurchaseWithDetails[];
 }
