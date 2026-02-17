@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Recipe } from "@/types";
+import { User } from "better-auth";
 import {
   ArrowLeft,
   Bookmark,
@@ -20,10 +21,52 @@ import React from "react";
 
 interface RecipeDetailProps {
   recipe: Recipe;
+  hasPurchased: boolean;
+  user?: User;
 }
 
-export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe }) => {
+export const RecipeDetail: React.FC<RecipeDetailProps> = ({
+  recipe,
+  hasPurchased,
+  user,
+}) => {
   const router = useRouter();
+  const [isBuying, setIsBuying] = React.useState(false);
+
+  const handlePurchase = async () => {
+    if (!user) {
+      router.push(
+        "/sign-in?redirect=" + encodeURIComponent(window.location.pathname),
+      );
+      return;
+    }
+
+    setIsBuying(true);
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ recipeId: recipe.id }),
+      });
+
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.error || "Erreur lors de la redirection vers Stripe");
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      alert("Une erreur est survenue");
+    } finally {
+      setIsBuying(false);
+    }
+  };
+
+  const showContent = !recipe.isPremium || hasPurchased;
+
   return (
     <main className="max-w-6xl mx-auto px-6 py-32 min-h-screen font-sans">
       {/* Breadcrumbs */}
@@ -94,6 +137,11 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe }) => {
                 Premium
               </span>
             )}
+            {recipe.isPremium && !hasPurchased && recipe.price && (
+              <span className="bg-terracotta text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-terracotta/20">
+                {recipe.price.toFixed(2)} €
+              </span>
+            )}
           </div>
           <h1 className="text-3xl md:text-5xl font-medium font-serif text-white serif mb-6 max-w-4xl leading-tight">
             {recipe.title}
@@ -161,6 +209,17 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe }) => {
             <Printer className="size-6 text-terracotta" />
             Print Recipe
           </Button>
+          {recipe.isPremium && !hasPurchased && (
+            <Button
+              onClick={handlePurchase}
+              disabled={isBuying}
+              className="bg-terracotta text-white px-8 py-2 rounded-lg font-bold text-sm hover:bg-darkBrown transition-all shadow-lg shadow-terracotta/20"
+            >
+              {isBuying
+                ? "Redirection..."
+                : `Débloquer la recette (${recipe.price?.toFixed(2)} €)`}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -172,17 +231,25 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe }) => {
             Ingredients
           </h3>
           <ul className="space-y-4">
-            {recipe.ingredients?.map((ingredient, idx) => (
-              <li key={idx} className="flex items-start gap-3 group">
-                <input
-                  className="mt-1 h-5 w-5 rounded border-sage text-terracotta focus:ring-terracotta/20 cursor-pointer accent-terracotta"
-                  type="checkbox"
-                />
-                <span className="text-base leading-snug text-darkBrown/80 group-hover:text-terracotta transition-colors">
-                  {ingredient}
-                </span>
-              </li>
-            ))}
+            {showContent ? (
+              recipe.ingredients?.map((ingredient, idx) => (
+                <li key={idx} className="flex items-start gap-3 group">
+                  <input
+                    className="mt-1 h-5 w-5 rounded border-sage text-terracotta focus:ring-terracotta/20 cursor-pointer accent-terracotta"
+                    type="checkbox"
+                  />
+                  <span className="text-base leading-snug text-darkBrown/80 group-hover:text-terracotta transition-colors">
+                    {ingredient}
+                  </span>
+                </li>
+              ))
+            ) : (
+              <div className="p-4 bg-beige/10 border border-dashed border-terracotta/30 rounded-lg">
+                <p className="text-sm text-darkBrown/60 text-center italic">
+                  Les ingrédients sont réservés aux membres premium.
+                </p>
+              </div>
+            )}
           </ul>
 
           {/* Newsletter Card */}
@@ -210,35 +277,73 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({ recipe }) => {
             Preparation
           </h3>
           <div className="space-y-12">
-            {recipe.instructions?.map((instruction, idx) => (
-              <div key={idx} className="flex flex-col lg:flex-row gap-6">
-                <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-3">
-                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-terracotta text-white font-bold text-sm shrink-0">
-                      {idx + 1}
-                    </span>
-                    <h4 className="text-xl font-serif font-bold uppercase tracking-wide text-terracotta/80">
-                      {idx === 0
-                        ? "Prep and Cook"
-                        : idx === recipe.instructions!.length - 1
-                          ? "Finish and Serve"
-                          : `Step ${idx + 1}`}
-                    </h4>
+            {showContent ? (
+              recipe.instructions?.map((instruction, idx) => (
+                <div key={idx} className="flex flex-col lg:flex-row gap-6">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-4 mb-3">
+                      <span className="flex items-center justify-center w-8 h-8 rounded-full bg-terracotta text-white font-bold text-sm shrink-0">
+                        {idx + 1}
+                      </span>
+                      <h4 className="text-xl font-serif font-bold uppercase tracking-wide text-terracotta/80">
+                        {idx === 0
+                          ? "Prep and Cook"
+                          : idx === recipe.instructions!.length - 1
+                            ? "Finish and Serve"
+                            : `Step ${idx + 1}`}
+                      </h4>
+                    </div>
+                    <p className="text-lg leading-relaxed text-darkBrown/90 font-light">
+                      {instruction}
+                    </p>
                   </div>
-                  <p className="text-lg leading-relaxed text-darkBrown/90 font-light">
-                    {instruction}
-                  </p>
+                  <div className="lg:w-1/3 shrink-0">
+                    <div
+                      className="aspect-video lg:aspect-square bg-cover bg-center rounded-lg shadow-md"
+                      style={{
+                        backgroundImage: `url('${(recipe.additionalImages && recipe.additionalImages[idx]) || recipe.image}')`,
+                      }}
+                    ></div>
+                  </div>
                 </div>
-                <div className="lg:w-1/3 shrink-0">
-                  <div
-                    className="aspect-video lg:aspect-square bg-cover bg-center rounded-lg shadow-md"
-                    style={{
-                      backgroundImage: `url('${(recipe.additionalImages && recipe.additionalImages[idx]) || recipe.image}')`,
-                    }}
-                  ></div>
+              ))
+            ) : (
+              <div className="relative group overflow-hidden rounded-2xl border border-beige bg-beige/5 p-12 text-center">
+                <div className="max-w-md mx-auto">
+                  <div className="w-16 h-16 bg-terracotta/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg
+                      className="w-8 h-8 text-terracotta"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                      />
+                    </svg>
+                  </div>
+                  <h4 className="text-2xl font-serif font-bold text-darkBrown mb-4">
+                    Contenu Premium
+                  </h4>
+                  <p className="text-darkBrown/60 mb-8 leading-relaxed">
+                    Achetez cette recette pour débloquer les instructions de
+                    préparation détaillées et les conseils exclusifs du chef.
+                  </p>
+                  <Button
+                    onClick={handlePurchase}
+                    disabled={isBuying}
+                    className="w-full bg-terracotta text-white py-4 rounded-xl font-bold hover:bg-darkBrown transition-all shadow-xl shadow-terracotta/20"
+                  >
+                    {isBuying
+                      ? "Redirection..."
+                      : `Acheter pour ${recipe.price?.toFixed(2)} €`}
+                  </Button>
                 </div>
               </div>
-            ))}
+            )}
 
             {/* Premium Tip Box */}
             <div className="bg-sage/10 border-l-4 border-sage p-8 rounded-r-xl my-10 shadow-sm">
