@@ -22,6 +22,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  purchases     Purchase[]
 
   role       String?
   banned     Boolean?  @default(false)
@@ -94,6 +95,7 @@ model Recipe {
   prepTime         String
   difficulty       String
   isPremium        Boolean  @default(false)
+  price            Float?   @default(0)
   isPopular        Boolean  @default(false)
   isFeatured       Boolean  @default(false)
   isInCollection   Boolean  @default(false)
@@ -106,8 +108,22 @@ model Recipe {
   categoryId       String
   status           RecipeStatus @default(draft)
   category         Category @relation(fields: [categoryId], references: [id])
+  purchases        Purchase[]
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+}
+
+model Purchase {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  recipeId  String
+  recipe    Recipe   @relation(fields: [recipeId], references: [id])
+  amount    Float
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([recipeId])
 }
 
 enum RecipeStatus {
