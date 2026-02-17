@@ -32,15 +32,15 @@ model User {
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  userId       String
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  expiresAt    DateTime?
-  token        String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  ipAddress    String?
-  userAgent    String?
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime?
+  token     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  ipAddress String?
+  userAgent String?
 
   impersonatedBy String?
 
@@ -78,63 +78,87 @@ model Category {
   description String
   image       String
   icon        String?
+  available   Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   recipes     Recipe[]
 }
 
 model Recipe {
-  id               String             @id @default(cuid())
+  id               String   @id @default(cuid())
   title            String
-  slug             String             @unique
+  slug             String   @unique
   description      String
   image            String
   additionalImages String? // JSON array
   prepTime         String
   difficulty       String
-  isPremium        Boolean            @default(false)
-  isPopular        Boolean            @default(false)
+  isPremium        Boolean  @default(false)
+  isPopular        Boolean  @default(false)
+  isFeatured       Boolean  @default(false)
+  isInCollection   Boolean  @default(false)
   servings         Int?
   ingredients      String? // JSON array
   instructions     String? // JSON array
   categoryId       String
-  category         Category           @relation(fields: [categoryId], references: [id])
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
-  collections      RecipeCollection[]
+  status           RecipeStatus @default(draft)
+  category         Category @relation(fields: [categoryId], references: [id])
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
-model Collection {
-  id          String             @id @default(cuid())
-  title       String
-  slug        String             @unique
-  description String
-  image       String
-  isLocked    Boolean            @default(false)
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
-  recipes     RecipeCollection[]
-}
-
-model RecipeCollection {
-  recipeId     String
-  collectionId String
-  recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-
-  @@id([recipeId, collectionId])
+enum RecipeStatus {
+  draft
+  published
 }
 
 model HomePageContent {
-  id                String   @id @default(cuid())
-  heroTitle         String
-  heroSubtitle      String
-  heroImage         String
-  aboutTitle        String?
-  aboutText         String?
-  aboutImage        String?
-  newsletterEnabled Boolean  @default(true)
-  updatedAt         DateTime @updatedAt
+  id String @id @default(cuid())
+
+  // Hero section
+  heroEnabled     Boolean @default(true)
+  heroTitle       String  @default("")
+  heroSubtitle    String  @default("")
+  heroImage       String  @default("")
+  heroButtonText  String  @default("Voir les recettes")
+  heroButtonLink  String  @default("/recipes")
+
+  // Categories section
+  categoriesEnabled Boolean @default(true)
+  categoriesTitle   String  @default("Catégories")
+
+  // Latest Recipes section
+  latestRecipesEnabled Boolean @default(true)
+  latestRecipesTitle   String  @default("Dernières Recettes")
+  latestRecipesLimit   Int     @default(6)
+
+  // Collections section
+  collectionsEnabled Boolean @default(true)
+  collectionsTitle   String  @default("Nos Collections")
+
+  // Popular Recipes section
+  popularRecipesEnabled Boolean @default(true)
+  popularRecipesTitle   String  @default("Recettes Populaires")
+  popularRecipesLimit   Int     @default(6)
+
+  // Featured Recipes section
+  featuredRecipesEnabled Boolean @default(true)
+  featuredRecipesTitle   String  @default("Recettes en Vedette")
+
+  // About section
+  aboutEnabled    Boolean @default(true)
+  aboutImage      String  @default("")
+  aboutTitle      String  @default("")
+  aboutText       String  @default("")
+  aboutButtonText String  @default("En savoir plus")
+  aboutButtonLink String  @default("/about")
+
+  // Newsletter section
+  newsletterEnabled  Boolean @default(true)
+  newsletterTitle    String  @default("Restez informé")
+  newsletterSubtitle String  @default("Inscrivez-vous pour recevoir nos dernières recettes")
+
+  updatedAt DateTime @updatedAt
 }
 
 model Verification {
