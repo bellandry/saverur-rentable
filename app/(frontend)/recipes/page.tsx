@@ -1,4 +1,5 @@
 import { getCategories, getLatestRecipes } from "@/lib/fetch-datas";
+import { Suspense } from "react";
 import RecipesClient from "./page-client";
 
 export default async function RecipesPage() {
@@ -7,8 +8,8 @@ export default async function RecipesPage() {
     getCategories(),
   ]);
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <RecipesClient recipes={recipes} categories={categories} />
-    </>
+    </Suspense>
   );
 }
