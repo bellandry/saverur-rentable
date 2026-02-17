@@ -3,7 +3,6 @@
 import {
   BookOpen,
   FolderOpen,
-  Grid,
   Home,
   LogOut,
   Menu,
@@ -26,7 +25,6 @@ export default function AdminLayoutClient({
     { name: "Tableau de bord", href: "/admin", icon: Home },
     { name: "Recettes", href: "/admin/recipes", icon: BookOpen },
     { name: "Catégories", href: "/admin/categories", icon: FolderOpen },
-    { name: "Collections", href: "/admin/collections", icon: Grid },
     { name: "Page d'accueil", href: "/admin/homepage", icon: Settings },
   ];
 
