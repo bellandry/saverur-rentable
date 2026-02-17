@@ -25,7 +25,7 @@ export const PopularRecipeFeaturedCard = ({
           </div>
           <div className="absolute p-6 bottom-0 left-0 right-0">
             <span className="text-amber-400 text-xs font-bold uppercase tracking-wider mb-2 block">
-              {recipe.category}
+              {recipe.category.name}
             </span>
             <h3 className="text-2xl font-serif md:text-4xl font-semibold serif mb-2">
               {recipe.title}

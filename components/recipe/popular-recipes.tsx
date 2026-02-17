@@ -4,9 +4,13 @@ import { PopularRecipeListItem } from "./popular-recipe-list-item";
 
 export type PopularRecipesProps = {
   popularRecipes: Recipe[];
+  title?: string;
 };
 
-export const PopularRecipes = ({ popularRecipes }: PopularRecipesProps) => {
+export const PopularRecipes = ({
+  popularRecipes,
+  title = "Community Favorites",
+}: PopularRecipesProps) => {
   return (
     <section className="bg-stone-900 container mx-auto text-white rounded-4xl px-6 py-16 md:py-20 overflow-hidden relative">
       <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] -mr-48 -mt-48"></div>
@@ -20,7 +24,7 @@ export const PopularRecipes = ({ popularRecipes }: PopularRecipesProps) => {
               </span>
             </div>
             <h2 className="text-3xl font-serif md:text-4xl font-bold serif">
-              Community Favorites
+              {title}
             </h2>
           </div>
         </div>

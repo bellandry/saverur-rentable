@@ -29,7 +29,7 @@ export const PopularRecipeListItem = ({
       </div>
       <div className="grow">
         <span className="text-amber-500 text-[10px] font-bold uppercase tracking-widest mb-1 block">
-          {recipe.category}
+          {recipe.category.name}
         </span>
         <h4 className="text-xl font-serif font-semibold group-hover:text-amber-400 transition-colors line-clamp-1">
           {recipe.title}

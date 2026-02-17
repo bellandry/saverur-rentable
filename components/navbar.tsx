@@ -1,13 +1,23 @@
 "use client";
 
+import { authClient, useSession } from "@/lib/auth-client";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button } from "./ui/button";
+import { UserMobile } from "./user-mobile";
+import { UserProfile } from "./user-profile";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { data: session, isPending } = useSession();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await authClient.signOut();
+    router.refresh();
+  };
 
   // Prevent scrolling when mobile menu is open
   useEffect(() => {
@@ -77,9 +87,7 @@ const Navbar = () => {
           >
             À propos
           </Link>
-          <Button className="bg-terracotta px-5 py-2 rounded-sm text-sm font-medium hover:bg-darkBrown transition-colors uppercase tracking-widest">
-            Connexion
-          </Button>
+          <UserProfile />
         </div>
 
         {/* Mobile Menu Overlay */}
@@ -111,12 +119,8 @@ const Navbar = () => {
           >
             À propos
           </Link>
-          <Button
-            className="mt-4 bg-terracotta px-8 py-3 rounded-sm text-lg font-medium hover:bg-darkBrown transition-colors uppercase tracking-widest w-64"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Connexion
-          </Button>
+
+          <UserMobile setIsMobileMenuOpen={setIsMobileMenuOpen} />
         </div>
       </div>
     </nav>

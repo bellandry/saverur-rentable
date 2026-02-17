@@ -1,0 +1,193 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Tables better-auth
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  purchases     Purchase[]
+
+  role       String?
+  banned     Boolean?  @default(false)
+  banReason  String?
+  banExpires DateTime?
+
+  @@map("user")
+}
+
+model Session {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime?
+  token     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  ipAddress String?
+  userAgent String?
+
+  impersonatedBy String?
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@index([userId])
+  @@map("account")
+}
+
+// Collections métier
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  image       String
+  icon        String?
+  available   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  recipes     Recipe[]
+}
+
+model Recipe {
+  id               String   @id @default(cuid())
+  title            String
+  slug             String   @unique
+  description      String
+  image            String
+  additionalImages String? // JSON array
+  prepTime         String
+  difficulty       String
+  isPremium        Boolean  @default(false)
+  price            Float?   @default(0)
+  isPopular        Boolean  @default(false)
+  isFeatured       Boolean  @default(false)
+  isInCollection   Boolean  @default(false)
+  cookTime         String   @default("30 minutes")
+  tips             String?
+  nutritionInfo    String?
+  servings         Int?
+  ingredients      String? // JSON array
+  instructions     String? // JSON array
+  categoryId       String
+  status           RecipeStatus @default(draft)
+  category         Category @relation(fields: [categoryId], references: [id])
+  purchases        Purchase[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Purchase {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  recipeId  String
+  recipe    Recipe   @relation(fields: [recipeId], references: [id])
+  amount    Float
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([recipeId])
+}
+
+enum RecipeStatus {
+  draft
+  published
+}
+
+model HomePageContent {
+  id String @id @default(cuid())
+
+  // Hero section
+  heroEnabled     Boolean @default(true)
+  heroTitle       String  @default("")
+  heroSubtitle    String  @default("")
+  heroImage       String  @default("")
+  heroButtonText  String  @default("Voir les recettes")
+  heroButtonLink  String  @default("/recipes")
+
+  // Categories section
+  categoriesEnabled Boolean @default(true)
+  categoriesTitle   String  @default("Catégories")
+
+  // Latest Recipes section
+  latestRecipesEnabled Boolean @default(true)
+  latestRecipesTitle   String  @default("Dernières Recettes")
+  latestRecipesLimit   Int     @default(6)
+
+  // Collections section
+  collectionsEnabled Boolean @default(true)
+  collectionsTitle   String  @default("Nos Collections")
+
+  // Popular Recipes section
+  popularRecipesEnabled Boolean @default(true)
+  popularRecipesTitle   String  @default("Recettes Populaires")
+  popularRecipesLimit   Int     @default(6)
+
+  // Featured Recipes section
+  featuredRecipesEnabled Boolean @default(true)
+  featuredRecipesTitle   String  @default("Recettes en Vedette")
+
+  // About section
+  aboutEnabled    Boolean @default(true)
+  aboutImage      String  @default("")
+  aboutTitle      String  @default("")
+  aboutText       String  @default("")
+  aboutButtonText String  @default("En savoir plus")
+  aboutButtonLink String  @default("/about")
+
+  // Newsletter section
+  newsletterEnabled  Boolean @default(true)
+  newsletterTitle    String  @default("Restez informé")
+  newsletterSubtitle String  @default("Inscrivez-vous pour recevoir nos dernières recettes")
+
+  updatedAt DateTime @updatedAt
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}

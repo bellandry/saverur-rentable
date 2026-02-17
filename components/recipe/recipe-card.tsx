@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 import { Recipe } from "../../types";
 import { Button } from "../ui/button";
@@ -66,7 +67,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         <div className={"p-4"}>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-amber-700 text-xs font-semibold tracking-wider uppercase">
-              {recipe.category}
+              {typeof recipe.category === "string"
+                ? recipe.category
+                : recipe.category.name}
             </span>
             <span className="text-stone-300">•</span>
             <span className="text-stone-500 text-xs">{recipe.prepTime}</span>
@@ -75,27 +78,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
           <h3
             className={`text-xl mb-1 font-bold font-serif text-stone-900 group-hover:text-amber-700 transition-colors`}
           >
-            {recipe.title}
+            <Link href={`/recipes/${recipe.slug}`}>{recipe.title}</Link>
           </h3>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 text-stone-400 text-sm">
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-              <span>{recipe.difficulty}</span>
-            </div>
-          </div>
         </div>
       </div>
 

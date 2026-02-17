@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Recipe } from "../../types";
 import { Button } from "../ui/button";
@@ -42,9 +43,10 @@ const QuickViewModal = ({ recipe, onClose }: QuickViewModalProps) => {
 
         {/* Image Section */}
         <div className="md:w-1/2 aspect-video md:aspect-square">
-          <img
+          <Image
             src={recipe.image}
             alt={recipe.title}
+            fill
             className="w-full h-full object-cover"
           />
         </div>
@@ -53,7 +55,7 @@ const QuickViewModal = ({ recipe, onClose }: QuickViewModalProps) => {
         <div className="md:w-1/2 p-4 md:p-8 flex flex-col justify-center">
           <div className="flex items-center gap-2 mb-4">
             <span className="text-amber-700 text-xs font-semibold tracking-wider uppercase">
-              {recipe.category}
+              {recipe.category.name}
             </span>
             <span className="text-stone-300">•</span>
             <span className="text-stone-500 text-xs">{recipe.prepTime}</span>

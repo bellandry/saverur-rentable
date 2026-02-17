@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+import { Toaster } from "@/components/ui/sonner";
 import { Inter, Playfair_Display } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -36,7 +38,8 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={`${playfair.variable} ${inter.variable} antialiased`}>
-        {children}
+        <Toaster />
+        <NuqsAdapter>{children}</NuqsAdapter>
       </body>
     </html>
   );

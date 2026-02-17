@@ -1,3 +1,5 @@
+import { Category } from "@prisma/client";
+
 export interface Recipe {
   id: string;
   title: string;
@@ -5,20 +7,18 @@ export interface Recipe {
   description: string;
   image: string;
   isPopular: boolean;
+  isFeatured: boolean;
+  isInCollection: boolean;
   additionalImages?: string[];
   prepTime: string;
-  difficulty: "Easy" | "Intermediate" | "Advanced";
+  cookTime?: string;
+  difficulty: string | "Advanced";
   isPremium: boolean;
-  category: string;
+  price?: number | null;
+  category: Category;
+  servings: number | null;
   ingredients?: string[];
   instructions?: string[];
-}
-
-export interface CollectionRecipe {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  image: string;
-  isLocked: boolean;
+  tips?: string | null;
+  nutritionInfo?: string | null;
 }
