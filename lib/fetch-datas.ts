@@ -132,14 +132,22 @@ export async function getRecipeBySlug(slug: string): Promise<Recipe | null> {
 export async function getNewsletterData(): Promise<{
   newsletterTitle: string;
   newsletterSubtitle: string;
+  isAvailable: boolean;
 } | null> {
   const newsletter = await prisma.homePageContent.findFirst({
     select: {
       newsletterTitle: true,
       newsletterSubtitle: true,
+      newsletterEnabled: true,
     },
   });
-  return newsletter;
+  return newsletter
+    ? {
+        newsletterTitle: newsletter.newsletterTitle,
+        newsletterSubtitle: newsletter.newsletterSubtitle,
+        isAvailable: newsletter.newsletterEnabled,
+      }
+    : null;
 }
 
 export async function getPurchasedRecipes(userId: string): Promise<Recipe[]> {

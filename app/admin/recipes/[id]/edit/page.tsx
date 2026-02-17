@@ -268,6 +268,7 @@ export default function EditRecipePage() {
             value={formData.image}
             onChange={(url) => setFormData((prev) => ({ ...prev, image: url }))}
             label="Image de couverture *"
+            className="aspect-video w-full md:w-1/2"
           />
         </div>
 
