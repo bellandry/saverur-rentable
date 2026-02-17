@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
-import { CATEGORIES } from "@/constant";
+import { getCategories } from "@/lib/fetch-datas";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const CategoriesPage = () => {
+export default async function CategoriesPage() {
+  const categories = await getCategories();
   return (
     <div className="container mx-auto pt-32 pb-24 min-h-screen bg-cream">
       <section className="mb-24">
@@ -17,7 +18,7 @@ const CategoriesPage = () => {
         </p>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-          {CATEGORIES.map((category) => (
+          {categories.map((category) => (
             <Link
               key={category.id}
               href={`/recipes/?category=${category.slug}`}
@@ -98,6 +99,4 @@ const CategoriesPage = () => {
       </section>
     </div>
   );
-};
-
-export default CategoriesPage;
+}

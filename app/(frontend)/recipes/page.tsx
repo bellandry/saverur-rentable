@@ -1,9 +1,14 @@
+import { getCategories, getLatestRecipes } from "@/lib/fetch-datas";
 import RecipesClient from "./page-client";
 
-export default function RecipesPage() {
+export default async function RecipesPage() {
+  const [recipes, categories] = await Promise.all([
+    getLatestRecipes(100),
+    getCategories(),
+  ]);
   return (
     <>
-      <RecipesClient />
+      <RecipesClient recipes={recipes} categories={categories} />
     </>
   );
 }

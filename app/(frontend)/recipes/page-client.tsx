@@ -2,13 +2,19 @@
 
 import RecipeCard from "@/components/recipe/recipe-card";
 import { Button } from "@/components/ui/button";
-import { ALL_RECIPES, CATEGORIES } from "@/constant";
+import { Recipe } from "@/types";
+import { Category } from "@prisma/client";
 import { useQueryState } from "nuqs";
 import { useMemo, useState } from "react";
 
 const ITEMS_PER_PAGE = 8;
 
-const RecipesClient = () => {
+interface RecipesClientProps {
+  recipes: Recipe[];
+  categories: Category[];
+}
+
+const RecipesClient = ({ recipes, categories }: RecipesClientProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useQueryState("category");
   const [selectedDifficulty, setSelectedDifficulty] =
@@ -16,17 +22,17 @@ const RecipesClient = () => {
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
 
   const filteredRecipes = useMemo(() => {
-    return ALL_RECIPES.filter((recipe) => {
+    return recipes.filter((recipe) => {
       const matchesSearch = recipe.title
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
       const matchesCategory =
-        !selectedCategory || recipe.category === selectedCategory;
+        !selectedCategory || recipe.category.slug === selectedCategory;
       const matchesDifficulty =
         !selectedDifficulty || recipe.difficulty === selectedDifficulty;
       return matchesSearch && matchesCategory && matchesDifficulty;
     });
-  }, [searchQuery, selectedCategory, selectedDifficulty]);
+  }, [searchQuery, selectedCategory, selectedDifficulty, recipes]);
 
   const displayedRecipes = filteredRecipes.slice(0, visibleCount);
   const hasMore = visibleCount < filteredRecipes.length;
@@ -62,7 +68,7 @@ const RecipesClient = () => {
             >
               Toutes
             </Button>
-            {CATEGORIES.map((cat) => (
+            {categories.map((cat) => (
               <Button
                 key={cat.name}
                 onClick={() => setSelectedCategory(cat.slug)}
