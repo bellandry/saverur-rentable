@@ -2,7 +2,7 @@
 
 import { Recipe } from "@/types";
 import { Recipe as PrismaRecipe, Purchase } from "@prisma/client";
-import { prisma } from "./prisma";
+import prisma from "./prisma";
 
 export async function getHomepageContent() {
   // Fetch homepage configuration
@@ -162,7 +162,7 @@ export async function getPurchasedRecipes(userId: string): Promise<Recipe[]> {
     },
   });
 
-  return Promise.all(purchases.map((p) => transformRecipe(p.recipe)));
+  return Promise.all(purchases.map((p: any) => transformRecipe(p.recipe)));
 }
 
 export type PurchaseWithDetails = Purchase & {
