@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { getRecipeBySlug } from "@/lib/fetch-datas";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { RecipeDetail } from "./page-client";
