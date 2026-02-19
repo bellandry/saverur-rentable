@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Button } from "@/components/ui/button";
 import { getCategories } from "@/lib/fetch-datas";
 import { ArrowRight } from "lucide-react";

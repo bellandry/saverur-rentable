@@ -174,6 +174,35 @@ model HomePageContent {
   updatedAt DateTime @updatedAt
 }
 
+model AboutPageContent {
+  id String @id @default(cuid())
+
+  // Hero section
+  heroTitle    String @default("À Propos de Saveur Rentable")
+  heroSubtitle String @default("Découvrez notre passion pour la cuisine et notre engagement envers vous.")
+  heroImage    String @default("")
+
+  // Story section
+  storyTitle String @default("Notre Histoire")
+  storyText  String @default("")
+  storyImage String @default("")
+
+  // Values section
+  valuesTitle String @default("Nos Valeurs")
+  values      String @default("[]") // format JSON: { icon: string, title: string, text: string }[]
+
+  // Stats section
+  stats String @default("[]") // format JSON: { label: string, value: string }[]
+
+  // CTA section
+  ctaTitle      String @default("Prêt à cuisiner ?")
+  ctaSubtitle   String @default("Explorez nos recettes et commencez votre voyage culinaire dès aujourd'hui.")
+  ctaButtonText String @default("Découvrir les recettes")
+  ctaButtonLink String @default("/recipes")
+
+  updatedAt DateTime @updatedAt
+}
+
 model Verification {
   id         String   @id
   identifier String

@@ -1,7 +1,11 @@
 "use server";
 
 import { Recipe } from "@/types";
-import { Recipe as PrismaRecipe, Purchase } from "@prisma/client";
+import {
+  AboutPageContent,
+  Recipe as PrismaRecipe,
+  Purchase,
+} from "@prisma/client";
 import prisma from "./prisma";
 
 export async function getHomepageContent() {
@@ -52,15 +56,22 @@ export async function getHomepageContent() {
 }
 
 export async function getCategories() {
-  const categories = await prisma.category.findMany({
-    where: {
-      available: true,
-    },
-    include: {
-      recipes: true,
-    },
-  });
-  return categories;
+  try {
+    const categories = await prisma.category.findMany({
+      where: {
+        available: true,
+      },
+      include: {
+        recipes: {
+          where: { status: "published" },
+        },
+      },
+    });
+    return categories;
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
+  }
 }
 
 // Helper function to transform Prisma recipe to Recipe type
@@ -87,46 +98,77 @@ export async function transformRecipe(
 }
 
 export async function getLatestRecipes(limit: number): Promise<Recipe[]> {
-  const recipes = await prisma.recipe.findMany({
-    take: limit,
-    orderBy: { createdAt: "desc" },
-    include: { category: true },
-  });
-  return Promise.all(recipes.map(transformRecipe));
+  try {
+    const recipes = await prisma.recipe.findMany({
+      where: { status: "published" },
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      include: { category: true },
+    });
+    return Promise.all(recipes.map(transformRecipe));
+  } catch (error) {
+    console.error("Error fetching latest recipes:", error);
+    return [];
+  }
 }
 
 export async function getPopularRecipes(limit: number): Promise<Recipe[]> {
-  const recipes = await prisma.recipe.findMany({
-    where: { isPopular: true },
-    take: limit,
-    include: { category: true },
-  });
-  return Promise.all(recipes.map(transformRecipe));
+  try {
+    const recipes = await prisma.recipe.findMany({
+      where: { isPopular: true, status: "published" },
+      take: limit,
+      include: { category: true },
+    });
+    return Promise.all(recipes.map(transformRecipe));
+  } catch (error) {
+    console.error("Error fetching popular recipes:", error);
+    return [];
+  }
 }
 
 export async function getFeaturedRecipes(): Promise<Recipe[]> {
-  const recipes = await prisma.recipe.findMany({
-    where: { isFeatured: true },
-    include: { category: true },
-  });
-  return Promise.all(recipes.map(transformRecipe));
+  try {
+    const recipes = await prisma.recipe.findMany({
+      where: { isFeatured: true, status: "published" },
+      include: { category: true },
+    });
+    return Promise.all(recipes.map(transformRecipe));
+  } catch (error) {
+    console.error("Error fetching featured recipes:", error);
+    return [];
+  }
 }
 
 export async function getCollectionRecipes(limit: number): Promise<Recipe[]> {
-  const recipes = await prisma.recipe.findMany({
-    where: { isInCollection: true },
-    take: limit,
-    include: { category: true },
-  });
-  return Promise.all(recipes.map(transformRecipe));
+  try {
+    const recipes = await prisma.recipe.findMany({
+      where: { isInCollection: true, status: "published" },
+      take: limit,
+      include: { category: true },
+    });
+    return Promise.all(recipes.map(transformRecipe));
+  } catch (error) {
+    console.error("Error fetching collection recipes:", error);
+    return [];
+  }
 }
 
 export async function getRecipeBySlug(slug: string): Promise<Recipe | null> {
-  const recipe = await prisma.recipe.findUnique({
-    where: { slug },
-    include: { category: true },
-  });
-  return recipe ? transformRecipe(recipe) : null;
+  try {
+    const recipe = await prisma.recipe.findUnique({
+      where: { slug },
+      include: { category: true },
+    });
+
+    if (!recipe || recipe.status !== "published") {
+      return null;
+    }
+
+    return transformRecipe(recipe);
+  } catch (error) {
+    console.error("Error fetching recipe by slug:", error);
+    return null;
+  }
 }
 
 export async function getNewsletterData(): Promise<{
@@ -198,4 +240,56 @@ export async function getAllPurchases(): Promise<PurchaseWithDetails[]> {
   });
 
   return purchases as PurchaseWithDetails[];
+}
+
+export async function getAboutPageContent(): Promise<AboutPageContent> {
+  try {
+    const content = await prisma.aboutPageContent.findFirst();
+
+    if (!content) {
+      // Return default values if no content exists yet
+      return {
+        id: "",
+        heroTitle: "À Propos de Saveur Rentable",
+        heroSubtitle:
+          "Découvrez notre passion pour la cuisine et notre engagement envers vous.",
+        heroImage: "",
+        storyTitle: "Notre Histoire",
+        storyText: "",
+        storyImage: "",
+        valuesTitle: "Nos Valeurs",
+        values: "[]",
+        stats: "[]",
+        ctaTitle: "Prêt à cuisiner ?",
+        ctaSubtitle:
+          "Explorez nos recettes et commencez votre voyage culinaire dès aujourd'hui.",
+        ctaButtonText: "Découvrir les recettes",
+        ctaButtonLink: "/recipes",
+        updatedAt: new Date(),
+      } as AboutPageContent;
+    }
+
+    return content;
+  } catch (error) {
+    console.error("Error fetching about page content:", error);
+    return {
+      id: "",
+      heroTitle: "À Propos de Saveur Rentable",
+      heroSubtitle:
+        "Découvrez notre passion pour la cuisine et notre engagement envers vous.",
+      heroImage: "",
+      storyTitle: "Notre Histoire",
+      storyText: "",
+      storyImage: "",
+      valuesTitle: "Nos Valeurs",
+      values: "[]",
+      stats: "[]",
+      ctaTitle: "Prêt à cuisiner ?",
+      ctaSubtitle:
+        "Explorez nos recettes et commencez votre voyage culinaire dès aujourd'hui.",
+      ctaButtonText: "Découvrir les recettes",
+      ctaButtonLink: "/recipes",
+      updatedAt: new Date(),
+    } as AboutPageContent;
+  }
 }
