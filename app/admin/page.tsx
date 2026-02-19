@@ -154,6 +154,9 @@ export default function AdminDashboard() {
             • <strong>Page d&apos;accueil</strong> : Personnalisez le contenu de
             votre site
           </li>
+          <li>
+            • <strong>À Propos</strong> : Gérez votre histoire et vos valeurs
+          </li>
         </ul>
       </div>
     </div>
