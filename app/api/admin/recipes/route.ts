@@ -19,6 +19,7 @@ const recipeSchema = z.object({
   instructions: z.array(z.string()),
   categoryId: z.string(),
   price: z.number().nullable().optional(),
+  status: z.enum(["draft", "published"]).optional(),
 });
 
 export async function POST(request: Request) {
@@ -35,6 +36,7 @@ export async function POST(request: Request) {
           : null,
         ingredients: JSON.stringify(data.ingredients),
         instructions: JSON.stringify(data.instructions),
+        status: data.status || "published",
       },
       include: {
         category: true,
@@ -67,6 +69,7 @@ export async function PUT(request: Request) {
           : null,
         ingredients: JSON.stringify(validated.ingredients),
         instructions: JSON.stringify(validated.instructions),
+        status: validated.status,
       },
       include: {
         category: true,
