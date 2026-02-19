@@ -36,7 +36,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
   const handlePurchase = async () => {
     if (!user) {
       router.push(
-        "/sign-in?redirect=" + encodeURIComponent(window.location.pathname),
+        "/login?redirect=" + encodeURIComponent(window.location.pathname),
       );
       return;
     }
