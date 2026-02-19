@@ -1,9 +1,8 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
+import { Pool } from "pg";
 
 const connectionString = process.env.DATABASE_URL!;
-
-const adapter = new PrismaPg({ connectionString });
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -11,10 +10,19 @@ const globalForPrisma = globalThis as unknown as {
 
 const prisma =
   globalForPrisma.prisma ??
-  new PrismaClient({
-    adapter,
-    log: ["error"],
-  });
+  (() => {
+    const pool = new Pool({
+      connectionString,
+      max: 2,
+      idleTimeoutMillis: 30000,
+      connectionTimeoutMillis: 5000,
+    });
+    const adapter = new PrismaPg(pool);
+    return new PrismaClient({
+      adapter,
+      log: ["error"],
+    });
+  })();
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;
