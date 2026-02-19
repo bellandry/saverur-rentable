@@ -41,6 +41,7 @@ export default function EditRecipePage() {
     isPopular: false,
     isFeatured: false,
     isInCollection: false,
+    status: "published",
   });
 
   useEffect(() => {
@@ -105,6 +106,7 @@ export default function EditRecipePage() {
         isPopular: recipe.isPopular || false,
         isFeatured: recipe.isFeatured || false,
         isInCollection: recipe.isInCollection || false,
+        status: recipe.status || "published",
       };
 
       setFormData(formDataToSet);
@@ -155,6 +157,7 @@ export default function EditRecipePage() {
           isPopular: formData.isPopular,
           isFeatured: formData.isFeatured,
           isInCollection: formData.isInCollection,
+          status: formData.status,
         }),
       });
 
@@ -240,7 +243,7 @@ export default function EditRecipePage() {
   }
 
   return (
-    <div>
+    <div className="max-w-5xl mx-auto">
       <div className="flex items-center gap-4 mb-8">
         <Link
           href="/admin/recipes"
@@ -278,8 +281,8 @@ export default function EditRecipePage() {
             Informations de base
           </h2>
 
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Titre *
@@ -295,7 +298,7 @@ export default function EditRecipePage() {
                 />
               </div>
 
-              <div>
+              <div className="hidden">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Slug *
                 </label>
@@ -329,7 +332,7 @@ export default function EditRecipePage() {
               />
             </div>
 
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Temps de préparation *
@@ -376,6 +379,7 @@ export default function EditRecipePage() {
                   type="number"
                   required
                   min="1"
+                  placeholder="Ex: 3"
                   value={formData.servings}
                   onChange={(e) =>
                     setFormData((prev) => ({
@@ -609,6 +613,40 @@ export default function EditRecipePage() {
                 Afficher dans Collections (max 3)
               </span>
             </label>
+
+            <div className="w-full pt-4 border-t border-gray-100">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Statut de publication
+              </label>
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, status: "published" }))
+                  }
+                  className={`flex-1 py-2 px-4 rounded-lg border-2 transition font-medium ${
+                    formData.status === "published"
+                      ? "border-terracotta bg-terracotta/5 text-terracotta"
+                      : "border-gray-200 text-gray-500 hover:border-gray-300"
+                  }`}
+                >
+                  Publié
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, status: "draft" }))
+                  }
+                  className={`flex-1 py-2 px-4 rounded-lg border-2 transition font-medium ${
+                    formData.status === "draft"
+                      ? "border-gray-400 bg-gray-100 text-gray-700"
+                      : "border-gray-200 text-gray-500 hover:border-gray-300"
+                  }`}
+                >
+                  Brouillon
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -693,13 +731,13 @@ export default function EditRecipePage() {
           <button
             type="submit"
             disabled={saving || !formData.image}
-            className="flex-1 bg-terracotta text-white py-4 rounded-lg font-medium hover:bg-darkBrown transition disabled:opacity-50 text-lg"
+            className="flex-1 text-sm bg-terracotta text-white py-2 md:py-4 rounded-lg font-medium hover:bg-darkBrown transition disabled:opacity-50 md:text-lg"
           >
             {saving ? "Enregistrement..." : "Mettre à jour la recette"}
           </button>
           <Link
             href="/admin/recipes"
-            className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-gray-400 transition text-lg"
+            className="px-4 py-2 md:px-8 md:py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-gray-400 transition text-sm md:text-lg"
           >
             Annuler
           </Link>

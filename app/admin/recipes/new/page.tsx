@@ -27,6 +27,7 @@ export default function NewRecipePage() {
     image: "",
     additionalImages: [] as string[],
     prepTime: "",
+    cookTime: "",
     servings: "",
     difficulty: "Facile",
     categoryId: "",
@@ -39,6 +40,7 @@ export default function NewRecipePage() {
     isPopular: false,
     isFeatured: false,
     isInCollection: false,
+    status: "published",
   });
 
   useEffect(() => {
@@ -112,6 +114,7 @@ export default function NewRecipePage() {
           isPopular: formData.isPopular,
           isFeatured: formData.isFeatured,
           isInCollection: formData.isInCollection,
+          status: formData.status,
         }),
       });
 
@@ -238,8 +241,8 @@ export default function NewRecipePage() {
             Informations de base
           </h2>
 
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Titre *
@@ -253,7 +256,7 @@ export default function NewRecipePage() {
                 />
               </div>
 
-              <div>
+              <div className="hidden">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Slug *
                 </label>
@@ -287,7 +290,7 @@ export default function NewRecipePage() {
               />
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Temps de préparation *
@@ -304,6 +307,25 @@ export default function NewRecipePage() {
                   }
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
                   placeholder="Ex: 15 min"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Temps de cuisson *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.cookTime}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      cookTime: e.target.value,
+                    }))
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
+                  placeholder="Ex: 30 min"
                 />
               </div>
 
@@ -347,7 +369,6 @@ export default function NewRecipePage() {
                 </select>
               </div>
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Catégorie *
@@ -370,100 +391,6 @@ export default function NewRecipePage() {
                   </option>
                 ))}
               </select>
-            </div>
-
-            {/* Status flags */}
-            <div className="flex gap-6 flex-wrap">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.isPremium}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      isPremium: e.target.checked,
-                    }))
-                  }
-                  className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
-                />
-                <span className="text-gray-700 font-medium">
-                  Recette Premium
-                </span>
-              </label>
-
-              {formData.isPremium && (
-                <div className="flex items-center gap-2">
-                  <label className="text-sm font-medium text-gray-700">
-                    Prix (€) *
-                  </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    required
-                    value={formData.price}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        price: e.target.value,
-                      }))
-                    }
-                    className="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
-                    placeholder="0.00"
-                  />
-                </div>
-              )}
-
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.isPopular}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      isPopular: e.target.checked,
-                    }))
-                  }
-                  className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
-                />
-                <span className="text-gray-700 font-medium">
-                  Recette Populaire
-                </span>
-              </label>
-
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.isFeatured}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      isFeatured: e.target.checked,
-                    }))
-                  }
-                  className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
-                />
-                <span className="text-gray-700 font-medium">
-                  Recette Mise en Avant (Featured)
-                </span>
-              </label>
-
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={formData.isInCollection}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      isInCollection: e.target.checked,
-                    }))
-                  }
-                  className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
-                />
-                <span className="text-gray-700 font-medium">
-                  Afficher dans Collections (max 3)
-                </span>
-              </label>
             </div>
           </div>
         </div>
@@ -551,6 +478,134 @@ export default function NewRecipePage() {
           </div>
         </div>
 
+        {/* Status Flags */}
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h2 className="text-xl font-serif font-bold text-darkBrown mb-4">
+            Statuts de la recette
+          </h2>
+          <div className="flex gap-6 flex-wrap">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.isPremium}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isPremium: e.target.checked,
+                  }))
+                }
+                className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
+              />
+              <span className="text-gray-700 font-medium">Recette Premium</span>
+            </label>
+
+            {formData.isPremium && (
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Prix (€) *
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  required
+                  value={formData.price}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, price: e.target.value }))
+                  }
+                  className="w-32 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
+                  placeholder="0.00"
+                />
+              </div>
+            )}
+
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.isPopular}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isPopular: e.target.checked,
+                  }))
+                }
+                className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
+              />
+              <span className="text-gray-700 font-medium">
+                Recette Populaire
+              </span>
+            </label>
+
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.isFeatured}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isFeatured: e.target.checked,
+                  }))
+                }
+                className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
+              />
+              <span className="text-gray-700 font-medium">
+                Recette Mise en Avant (Featured)
+              </span>
+            </label>
+
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.isInCollection}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isInCollection: e.target.checked,
+                  }))
+                }
+                className="w-5 h-5 text-terracotta focus:ring-terracotta border-gray-300 rounded"
+              />
+              <span className="text-gray-700 font-medium">
+                Afficher dans Collections (max 3)
+              </span>
+            </label>
+
+            <div className="w-full pt-4 border-t border-gray-100">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Statut de publication
+              </label>
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, status: "published" }))
+                  }
+                  className={`flex-1 py-2 px-4 rounded-lg border-2 transition font-medium ${
+                    formData.status === "published"
+                      ? "border-terracotta bg-terracotta/5 text-terracotta"
+                      : "border-gray-200 text-gray-500 hover:border-gray-300"
+                  }`}
+                >
+                  Publié
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, status: "draft" }))
+                  }
+                  className={`flex-1 py-2 px-4 rounded-lg border-2 transition font-medium ${
+                    formData.status === "draft"
+                      ? "border-gray-400 bg-gray-100 text-gray-700"
+                      : "border-gray-200 text-gray-500 hover:border-gray-300"
+                  }`}
+                >
+                  Brouillon
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Images additionnelles */}
         <div className="bg-white rounded-xl shadow-sm p-6">
           <h2 className="text-xl font-serif font-bold text-darkBrown mb-4">
@@ -632,13 +687,13 @@ export default function NewRecipePage() {
           <button
             type="submit"
             disabled={saving || !formData.image}
-            className="flex-1 bg-terracotta text-white py-4 rounded-lg font-medium hover:bg-darkBrown transition disabled:opacity-50 text-lg"
+            className="flex-1 bg-terracotta text-white py-2 md:py-4 rounded-lg font-medium hover:bg-darkBrown transition disabled:opacity-50 text-sm md:text-lg"
           >
             {saving ? "Création en cours..." : "Créer la recette"}
           </button>
           <Link
             href="/admin/recipes"
-            className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-gray-400 transition text-lg"
+            className="px-4 md:px-8 py-2 md:py-4 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-gray-400 transition text-sm md:text-lg"
           >
             Annuler
           </Link>
