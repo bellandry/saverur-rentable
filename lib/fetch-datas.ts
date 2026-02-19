@@ -1,7 +1,11 @@
 "use server";
 
 import { Recipe } from "@/types";
-import { Recipe as PrismaRecipe, Purchase } from "@prisma/client";
+import {
+  AboutPageContent,
+  Recipe as PrismaRecipe,
+  Purchase,
+} from "@prisma/client";
 import prisma from "./prisma";
 
 export async function getHomepageContent() {
@@ -236,4 +240,56 @@ export async function getAllPurchases(): Promise<PurchaseWithDetails[]> {
   });
 
   return purchases as PurchaseWithDetails[];
+}
+
+export async function getAboutPageContent(): Promise<AboutPageContent> {
+  try {
+    const content = await prisma.aboutPageContent.findFirst();
+
+    if (!content) {
+      // Return default values if no content exists yet
+      return {
+        id: "",
+        heroTitle: "À Propos de Saveur Rentable",
+        heroSubtitle:
+          "Découvrez notre passion pour la cuisine et notre engagement envers vous.",
+        heroImage: "",
+        storyTitle: "Notre Histoire",
+        storyText: "",
+        storyImage: "",
+        valuesTitle: "Nos Valeurs",
+        values: "[]",
+        stats: "[]",
+        ctaTitle: "Prêt à cuisiner ?",
+        ctaSubtitle:
+          "Explorez nos recettes et commencez votre voyage culinaire dès aujourd'hui.",
+        ctaButtonText: "Découvrir les recettes",
+        ctaButtonLink: "/recipes",
+        updatedAt: new Date(),
+      } as AboutPageContent;
+    }
+
+    return content;
+  } catch (error) {
+    console.error("Error fetching about page content:", error);
+    return {
+      id: "",
+      heroTitle: "À Propos de Saveur Rentable",
+      heroSubtitle:
+        "Découvrez notre passion pour la cuisine et notre engagement envers vous.",
+      heroImage: "",
+      storyTitle: "Notre Histoire",
+      storyText: "",
+      storyImage: "",
+      valuesTitle: "Nos Valeurs",
+      values: "[]",
+      stats: "[]",
+      ctaTitle: "Prêt à cuisiner ?",
+      ctaSubtitle:
+        "Explorez nos recettes et commencez votre voyage culinaire dès aujourd'hui.",
+      ctaButtonText: "Découvrir les recettes",
+      ctaButtonLink: "/recipes",
+      updatedAt: new Date(),
+    } as AboutPageContent;
+  }
 }
