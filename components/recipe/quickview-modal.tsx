@@ -24,7 +24,7 @@ const QuickViewModal = ({ recipe, onClose }: QuickViewModalProps) => {
         {/* Close Button */}
         <Button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/80 backdrop-blur-md text-stone-900 hover:bg-white transition-colors shadow-sm"
+          className="absolute cursor-pointer top-2 right-2 z-10 p-2 rounded-full bg-red-600/80 backdrop-blur-md text-white hover:bg-red-600 transition-colors shadow-sm"
         >
           <svg
             className="w-6 h-6"
@@ -42,7 +42,7 @@ const QuickViewModal = ({ recipe, onClose }: QuickViewModalProps) => {
         </Button>
 
         {/* Image Section */}
-        <div className="md:w-1/2 aspect-video md:aspect-square">
+        <div className="w-full md:w-1/2 relative aspect-video md:aspect-square">
           <Image
             src={recipe.image}
             alt={recipe.title}
@@ -124,13 +124,13 @@ const QuickViewModal = ({ recipe, onClose }: QuickViewModalProps) => {
           </div>
 
           <div className="flex gap-4">
-            <Button asChild className="flex-1 rounded-full">
+            <Button asChild className="flex-1 py-6 rounded-full">
               <Link href={`/recipes/${recipe.slug}`}>View Full Recipe</Link>
             </Button>
             <Button
               onClick={onClose}
               variant="outline"
-              className="rounded-full"
+              className="rounded-full py-6 px-6"
             >
               Close
             </Button>
