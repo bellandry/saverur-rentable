@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import About from "@/components/about-chef";
 import Categories from "@/components/categories";
 import Collections from "@/components/collection";

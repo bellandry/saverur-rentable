@@ -37,7 +37,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className={`${playfair.variable} ${inter.variable} antialiased`}>
+      <body
+        className={`${playfair.variable} ${inter.variable} antialiased`}
+        suppressHydrationWarning
+      >
         <Toaster />
         <NuqsAdapter>{children}</NuqsAdapter>
       </body>

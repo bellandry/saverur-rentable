@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getCategories, getLatestRecipes } from "@/lib/fetch-datas";
 import { Suspense } from "react";
 import RecipesClient from "./page-client";
