@@ -212,7 +212,7 @@ export default function CategoriesPage() {
               key={category.id}
               className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition"
             >
-              <div className="relative aspect-video">
+              <div className="relative w-full aspect-video">
                 <Image
                   src={category.image}
                   alt={category.name}
@@ -269,13 +269,14 @@ export default function CategoriesPage() {
             </DialogDescription>
           </DialogHeader>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <Label>Image *</Label>
               <ImageUpload
                 label=""
                 value={watchImage}
                 onChange={(url) => setValue("image", url)}
+                className="aspect-video w-full relative"
               />
               {errors.image && (
                 <p className="text-sm text-red-600 mt-1">
@@ -284,7 +285,7 @@ export default function CategoriesPage() {
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <div>
                 <Label htmlFor="name">Nom *</Label>
                 <Input
@@ -299,7 +300,7 @@ export default function CategoriesPage() {
                 )}
               </div>
 
-              <div>
+              <div className="hidden">
                 <Label htmlFor="slug">Slug *</Label>
                 <Input id="slug" {...register("slug")} className="bg-gray-50" />
                 {errors.slug && (

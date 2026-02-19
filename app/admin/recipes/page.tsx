@@ -30,6 +30,7 @@ interface Recipe {
   isPopular: boolean;
   isFeatured: boolean;
   isInCollection: boolean;
+  status: string;
   createdAt: string;
 }
 
@@ -196,6 +197,15 @@ export default function RecipesPage() {
                       {recipe.isPremium && (
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
                           Premium
+                        </span>
+                      )}
+                      {recipe.status === "draft" ? (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                          Brouillon
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 border border-green-200">
+                          Publié
                         </span>
                       )}
                     </div>
