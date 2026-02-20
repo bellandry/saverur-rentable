@@ -1,6 +1,7 @@
 "use client";
 
 import { ImageUpload } from "@/components/admin/image-upload";
+import { TiptapEditor } from "@/components/admin/tiptap-editor";
 import { ArrowLeft, Plus, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -495,24 +496,26 @@ export default function EditRecipePage() {
             </button>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-6">
             {formData.instructions.map((instruction, index) => (
-              <div key={index} className="flex gap-2">
-                <div className="shrink-0 w-8 h-8 bg-terracotta text-white rounded-full flex items-center justify-center font-medium mt-2">
+              <div key={index} className="flex gap-4">
+                <div className="shrink-0 w-10 h-10 bg-terracotta text-white rounded-full flex items-center justify-center font-bold mt-1 shadow-sm">
                   {index + 1}
                 </div>
-                <textarea
-                  value={instruction}
-                  onChange={(e) => updateInstruction(index, e.target.value)}
-                  rows={2}
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none resize-none"
-                  placeholder={`Étape ${index + 1}`}
-                />
+                <div className="flex-1 space-y-2">
+                  <TiptapEditor
+                    value={instruction}
+                    onChange={(value: string) =>
+                      updateInstruction(index, value)
+                    }
+                    placeholder={`Étape ${index + 1}`}
+                  />
+                </div>
                 {formData.instructions.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeInstruction(index)}
-                    className="p-3 text-red-600 hover:bg-red-50 rounded-lg transition"
+                    className="p-2 h-10 text-red-600 hover:bg-red-50 rounded-lg transition self-start"
                   >
                     <X className="w-5 h-5" />
                   </button>
