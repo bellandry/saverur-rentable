@@ -1,20 +1,10 @@
 "use client";
 
+import { RecipeHero } from "@/components/recipe/recipe-hero";
 import { Button } from "@/components/ui/button";
 import { Recipe } from "@/types";
 import { User } from "better-auth";
-import {
-  ArrowLeft,
-  Bookmark,
-  ChevronRight,
-  Clock,
-  PanelBottomOpen,
-  Printer,
-  Share,
-  Signal,
-  Users,
-} from "lucide-react";
-import Image from "next/image";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -82,146 +72,32 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
           {recipe.category.name}
         </Link>
         <ChevronRight className="text-terracotta size-4" />
-        <span className="text-darkBrown font-medium">{recipe.title}</span>
+        <span className="text-darkBrown font-medium line-clamp-1">
+          {recipe.title}
+        </span>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative h-[65vh] min-h-[500px] w-full overflow-hidden rounded-[48px] mb-12">
-        <Image
-          src={recipe.image}
-          alt={recipe.title}
-          fill
-          className="w-full h-full object-cover transform scale-105"
-        />
-        <div className="absolute inset-0 bg-linear-to-t from-stone-900 via-stone-900/20 to-stone-900/10"></div>
+      <RecipeHero recipe={recipe} hasPurchased={hasPurchased} />
 
-        {/* Back Navigation */}
-        <div className="absolute top-8 left-8 right-8 flex justify-between items-start z-20">
-          <button
-            onClick={() => router.back()}
-            className="bg-black/10 backdrop-blur-md text-white border border-white/20 px-5 py-2.5 rounded-full flex items-center gap-2 hover:bg-black/20 transition-all group"
-          >
-            <ArrowLeft />
-            Back
-          </button>
-
-          <div className="flex gap-3">
-            <button className="bg-white/10 backdrop-blur-md text-white border border-white/20 p-3 rounded-full hover:bg-white/20 transition-all">
-              <Bookmark />
-            </button>
-            <button className="bg-white/10 backdrop-blur-md text-white border border-white/20 p-3 rounded-full hover:bg-white/20 transition-all">
-              <Share />
-            </button>
-          </div>
-        </div>
-
-        {/* Hero Content */}
-        <div className="absolute bottom-12 left-6 right-6 md:left-16 md:right-16 z-10">
-          <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span className="bg-amber-500 text-stone-900 px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-amber-500/20">
-              {recipe.category.name}
-            </span>
-            {recipe.isPremium && (
-              <span className="bg-white/20 backdrop-blur-md text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/30 flex items-center gap-1.5">
-                <svg
-                  className="w-3 h-3 text-amber-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Premium
-              </span>
-            )}
-            {recipe.isPremium && !hasPurchased && recipe.price && (
-              <span className="bg-terracotta text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-terracotta/20">
-                {recipe.price.toFixed(2)} €
-              </span>
-            )}
-          </div>
-          <h1 className="text-3xl md:text-5xl font-medium font-serif text-white serif mb-6 max-w-4xl leading-tight">
-            {recipe.title}
-          </h1>
-          <p className="text-stone-300 md:text-lg font-light max-w-2xl leading-relaxed">
-            {recipe.description}
+      {/* Purchase Bar (Stays for action if needed) */}
+      {!hasPurchased && recipe.isPremium && (
+        <div className="flex flex-col md:flex-row items-center justify-between border-b border-beige pb-10 mb-10 gap-6">
+          <p className="text-darkBrown/60 italic">
+            Débloquez la recette complète avec tous les ingrédients et étapes
+            détaillées.
           </p>
-        </div>
-      </section>
-
-      {/* Metadata and Actions Bar */}
-      <div className="flex flex-col md:flex-row items-center justify-between border-b border-beige pb-6 mb-10 gap-6">
-        <div className="flex flex-wrap justify-center items-center gap-8">
-          <div className="flex items-center gap-2">
-            <Clock className="size-6 text-terracotta" />
-            <div>
-              <p className="text-[10px] uppercase tracking-widest font-bold text-terracotta">
-                Prep Time
-              </p>
-              <p className="font-bold text-darkBrown">{recipe.prepTime}</p>
-            </div>
-          </div>
-          <div className="w-px h-8 bg-beige"></div>
-          <div className="flex items-center gap-2">
-            <PanelBottomOpen className="size-6 text-terracotta" />
-            <div>
-              <p className="text-[10px] uppercase tracking-widest font-bold text-terracotta">
-                Cook Time
-              </p>
-              <p className="font-bold text-darkBrown">30m</p>
-            </div>
-          </div>
-          <div className="w-px h-8 bg-beige"></div>
-          <div className="flex items-center gap-2">
-            <Signal className="size-6 text-terracotta" />
-            <div>
-              <p className="text-[10px] uppercase tracking-widest font-bold text-terracotta">
-                Difficulty
-              </p>
-              <p className="font-bold text-darkBrown">{recipe.difficulty}</p>
-            </div>
-          </div>
-          {recipe.servings && (
-            <>
-              <div className="w-px h-8 bg-beige"></div>
-              <div className="flex items-center gap-2">
-                <Users className="size-6 text-terracotta" />
-                <div>
-                  <p className="text-[10px] uppercase tracking-widest font-bold text-terracotta">
-                    Servings
-                  </p>
-                  <p className="font-bold text-darkBrown">
-                    {recipe.servings} People(s)
-                  </p>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-        <div className="flex gap-3">
           <Button
-            onClick={() => window.print()}
-            className="flex items-center gap-2 border bg-transparent border-terracotta text-terracotta px-4 py-2 rounded-lg font-bold text-sm hover:bg-terracotta/5 transition-colors"
+            onClick={handlePurchase}
+            disabled={isBuying}
+            className="bg-terracotta text-white px-8 py-4 rounded-xl font-bold hover:bg-darkBrown transition-all shadow-xl shadow-terracotta/20"
           >
-            <Printer className="size-6 text-terracotta" />
-            Print Recipe
+            {isBuying
+              ? "Redirection..."
+              : `Débloquer la recette (${recipe.price?.toFixed(2)} $)`}
           </Button>
-          {recipe.isPremium && !hasPurchased && (
-            <Button
-              onClick={handlePurchase}
-              disabled={isBuying}
-              className="bg-terracotta text-white px-8 py-2 rounded-lg font-bold text-sm hover:bg-darkBrown transition-all shadow-lg shadow-terracotta/20"
-            >
-              {isBuying
-                ? "Redirection..."
-                : `Débloquer la recette (${recipe.price?.toFixed(2)} €)`}
-            </Button>
-          )}
         </div>
-      </div>
+      )}
 
       {/* Recipe Content Columns */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
