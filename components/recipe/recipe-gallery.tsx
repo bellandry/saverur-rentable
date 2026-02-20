@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Recipe } from "@/types";
 import Image from "next/image";
 import { useState } from "react";
+import { GalleryDatas } from "./gallery-datas";
 
 interface RecipeGalleryProps {
   mainImage: string;
@@ -23,15 +24,16 @@ export const RecipeGallery = ({
 
   if (allImages.length <= 1) {
     return (
-      <div className="relative w-full h-full overflow-hidden rounded-[48px]">
+      <div className=" flex-1">
         <Image
           src={mainImage}
           alt={recipe.title}
           fill
-          className="w-full h-full object-cover transform scale-105"
+          className="w-full relative h-full object-cover aspect-video transform scale-105 rounded-[32px] md:rounded-[40px]"
           priority
         />
-        <div className="absolute inset-0 bg-linear-to-t from-stone-900 via-stone-900/20 to-stone-900/10"></div>
+        <div className="absolute inset-0 bg-linear-to-t from-stone-900/80 via-stone-900/40 to-stone-900/20"></div>
+        <GalleryDatas recipe={recipe} hasPurchased={hasPurchased} />
       </div>
     );
   }
