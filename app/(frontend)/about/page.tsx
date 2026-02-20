@@ -4,6 +4,14 @@ import * as Icons from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "À Propos de Nous",
+  description:
+    "Découvrez l'histoire de Saveur Rentable, nos valeurs et notre passion pour la cuisine authentique et accessible.",
+};
+
 export const dynamic = "force-dynamic";
 
 export default async function AboutPage() {

@@ -1,3 +1,11 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Nos Recettes",
+  description:
+    "Toutes nos recettes : des plats de saison, des entrées gourmandes et des desserts irrésistibles, expliqués pas à pas.",
+};
+
 export const dynamic = "force-dynamic";
 
 import { getCategories, getLatestRecipes } from "@/lib/fetch-datas";

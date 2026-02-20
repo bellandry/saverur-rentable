@@ -1,3 +1,11 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Recettes de Saison & Astuces Culinaires",
+  description:
+    "Explorez notre univers culinaire : des recettes gourmandes, des techniques de chef et des conseils pour une cuisine savoureuse au meilleur prix.",
+};
+
 export const dynamic = "force-dynamic";
 
 import About from "@/components/about-chef";
