@@ -66,7 +66,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
         </Link>
         <ChevronRight className="text-terracotta size-4" />
         <Link
-          href={`/recipes/?category=${recipe.category}`}
+          href={`/recipes/?category=${recipe.category.slug}`}
           className="hover:underline"
         >
           {recipe.category.name}

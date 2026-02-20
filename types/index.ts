@@ -21,4 +21,6 @@ export interface Recipe {
   instructions?: string[];
   tips?: string | null;
   nutritionInfo?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }

@@ -1,3 +1,11 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Catégories de Recettes",
+  description:
+    "Explorez nos recettes par thématiques : entrées, plats, desserts et bien plus pour trouver l'inspiration.",
+};
+
 export const dynamic = "force-dynamic";
 
 import { Button } from "@/components/ui/button";
