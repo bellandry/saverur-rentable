@@ -184,7 +184,7 @@ export default function AboutContentPage() {
               setFormData((prev) => ({ ...prev, heroImage: url }))
             }
             label="Image de fond *"
-            className="aspect-video w-full"
+            className="aspect-video w-full relative"
           />
           <div className="grid grid-cols-1 gap-4">
             <div>
