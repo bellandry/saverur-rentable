@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Edit, Plus, Search, Trash2 } from "lucide-react";
+import { Copy, Edit, Plus, Search, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -43,6 +43,7 @@ export default function RecipesPage() {
     id: string;
     title: string;
   } | null>(null);
+  const [duplicating, setDuplicating] = useState<string | null>(null);
 
   useEffect(() => {
     fetchRecipes();
@@ -88,6 +89,25 @@ export default function RecipesPage() {
       toast.error("Erreur lors de la suppression de la recette");
     } finally {
       setDeleteConfirm(null);
+    }
+  };
+
+  const handleDuplicate = async (id: string) => {
+    setDuplicating(id);
+    try {
+      const response = await fetch(`/api/admin/recipes/${id}/duplicate`, {
+        method: "POST",
+      });
+
+      if (!response.ok) throw new Error("Erreur lors de la duplication");
+
+      toast.success("Recette dupliquée avec succès (Brouillon)");
+      fetchRecipes();
+    } catch (error) {
+      console.error("Error duplicating recipe:", error);
+      toast.error("Erreur lors de la duplication de la recette");
+    } finally {
+      setDuplicating(null);
     }
   };
 
@@ -213,10 +233,23 @@ export default function RecipesPage() {
                   <td className="px-6 py-4">
                     <div className="flex flex-col md:flex-row items-center justify-end gap-2">
                       <Link href={`/admin/recipes/${recipe.id}/edit`}>
-                        <Button variant="ghost" size="icon">
+                        <Button variant="ghost" size="icon" title="Modifier">
                           <Edit className="w-5 h-5" />
                         </Button>
                       </Link>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleDuplicate(recipe.id)}
+                        disabled={duplicating === recipe.id}
+                        title="Dupliquer"
+                      >
+                        <Copy
+                          className={`w-5 h-5 text-blue-600 ${
+                            duplicating === recipe.id ? "animate-pulse" : ""
+                          }`}
+                        />
+                      </Button>
                       <Button
                         variant="ghost"
                         size="icon"
@@ -226,6 +259,7 @@ export default function RecipesPage() {
                             title: recipe.title,
                           })
                         }
+                        title="Supprimer"
                       >
                         <Trash2 className="w-5 h-5 text-red-600" />
                       </Button>
