@@ -1,6 +1,7 @@
 "use client";
 
 import { ImageUpload } from "@/components/admin/image-upload";
+import { TiptapEditor } from "@/components/admin/tiptap-editor";
 import { ArrowLeft, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -256,16 +257,12 @@ export default function AboutContentPage() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Texte *
               </label>
-              <textarea
+              <TiptapEditor
                 value={formData.storyText}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    storyText: e.target.value,
-                  }))
+                onChange={(content) =>
+                  setFormData((prev) => ({ ...prev, storyText: content }))
                 }
-                rows={6}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
+                placeholder="Racontez votre histoire..."
               />
             </div>
           </div>

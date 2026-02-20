@@ -54,9 +54,10 @@ export default async function AboutPage() {
                 {content.storyTitle}
               </h2>
               <div className="w-20 h-1 bg-terracotta" />
-              <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-wrap">
-                {content.storyText}
-              </p>
+              <div
+                className="text-lg text-gray-700 leading-relaxed tiptap-content"
+                dangerouslySetInnerHTML={{ __html: content.storyText }}
+              />
             </div>
             {content.storyImage && (
               <div className="flex-1 relative aspect-4/5 w-full max-w-md lg:max-w-none">
