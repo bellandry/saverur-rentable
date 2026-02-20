@@ -279,32 +279,23 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
           <div className="space-y-12">
             {showContent ? (
               recipe.instructions?.map((instruction, idx) => (
-                <div key={idx} className="flex flex-col lg:flex-row gap-6">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-4 mb-3">
-                      <span className="flex items-center justify-center w-8 h-8 rounded-full bg-terracotta text-white font-bold text-sm shrink-0">
-                        {idx + 1}
-                      </span>
-                      <h4 className="text-xl font-serif font-bold uppercase tracking-wide text-terracotta/80">
-                        {idx === 0
-                          ? "Prep and Cook"
-                          : idx === recipe.instructions!.length - 1
-                            ? "Finish and Serve"
-                            : `Step ${idx + 1}`}
-                      </h4>
-                    </div>
-                    <p className="text-lg leading-relaxed text-darkBrown/90 font-light">
-                      {instruction}
-                    </p>
+                <div key={idx} className="mb-12">
+                  <div className="flex items-center gap-4 mb-4">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-terracotta text-white font-bold text-sm shrink-0">
+                      {idx + 1}
+                    </span>
+                    <h4 className="text-xl font-serif font-bold uppercase tracking-wide text-terracotta/80">
+                      {idx === 0
+                        ? "Prep and Cook"
+                        : idx === recipe.instructions!.length - 1
+                          ? "Finish and Serve"
+                          : `Step ${idx + 1}`}
+                    </h4>
                   </div>
-                  <div className="lg:w-1/3 shrink-0">
-                    <div
-                      className="aspect-video lg:aspect-square bg-cover bg-center rounded-lg shadow-md"
-                      style={{
-                        backgroundImage: `url('${(recipe.additionalImages && recipe.additionalImages[idx]) || recipe.image}')`,
-                      }}
-                    ></div>
-                  </div>
+                  <div
+                    className="prose prose-lg max-w-none text-darkBrown/90 font-light tiptap-content"
+                    dangerouslySetInnerHTML={{ __html: instruction }}
+                  />
                 </div>
               ))
             ) : (

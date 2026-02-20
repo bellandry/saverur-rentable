@@ -533,6 +533,7 @@ export default function HomepageContentPage() {
                   setFormData((prev) => ({ ...prev, aboutImage: url }))
                 }
                 label="Image"
+                className="w-full md:w-2/5 relative aspect-video"
               />
 
               <div className="grid grid-cols-1 gap-4">

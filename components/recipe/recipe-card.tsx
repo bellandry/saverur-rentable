@@ -72,7 +72,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                 : recipe.category.name}
             </span>
             <span className="text-stone-300">•</span>
-            <span className="text-stone-500 text-xs">{recipe.prepTime}</span>
+            <span className="text-stone-500 text-xs">
+              {recipe.cookTime} min
+            </span>
           </div>
 
           <h3

@@ -78,7 +78,7 @@ const RecipesClient = ({ recipes, categories }: RecipesClientProps) => {
                     : "bg-stone-100 text-stone-600 hover:bg-stone-200"
                 }`}
               >
-                {cat.name}
+                {`${cat.icon} ${cat.name}`}
               </Button>
             ))}
           </div>
