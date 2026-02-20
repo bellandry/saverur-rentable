@@ -204,7 +204,29 @@ export async function getPurchasedRecipes(userId: string): Promise<Recipe[]> {
     },
   });
 
-  return Promise.all(purchases.map((p: any) => transformRecipe(p.recipe)));
+  return Promise.all(
+    purchases.map((p) => transformRecipe(p.recipe as PrismaRecipe)),
+  );
+}
+
+export async function getFavoriteRecipes(userId: string): Promise<Recipe[]> {
+  const favorites = await prisma.favorite.findMany({
+    where: { userId },
+    include: {
+      recipe: {
+        include: {
+          category: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return Promise.all(
+    favorites.map((f) => transformRecipe(f.recipe as PrismaRecipe)),
+  );
 }
 
 export type PurchaseWithDetails = Purchase & {
