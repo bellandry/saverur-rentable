@@ -274,7 +274,7 @@ export default function HomepageContentPage() {
               />
               <p className="text-sm text-gray-500 mt-2">
                 Les catégories affichées sont gérées depuis la section
-                &quot;Catégories&quot; du dashboard.
+                &quot;Catégories&quot; du tableau de bord.
               </p>
             </div>
           )}
@@ -382,9 +382,9 @@ export default function HomepageContentPage() {
               />
               <p className="text-sm text-gray-500 mt-2">
                 Les collections sont gérées depuis la section
-                &quot;Collections&quot; du dashboard. Les recettes font partie
-                d&apos;une collection en cochant la case appropriée lors de
-                l&apos;édition de la recette.
+                &quot;Collections&quot; du tableau de bord. Les recettes font
+                partie d&apos;une collection en cochant la case appropriée lors
+                de l&apos;édition de la recette.
               </p>
             </div>
           )}

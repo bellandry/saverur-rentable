@@ -88,7 +88,7 @@ const QuickViewModal = ({ recipe, onClose }: QuickViewModalProps) => {
               </div>
               <div>
                 <span className="block text-[10px] text-stone-400 uppercase tracking-wider font-bold">
-                  Time
+                  Temps
                 </span>
                 <span className="text-sm font-medium text-stone-900">
                   {recipe.prepTime}
@@ -114,7 +114,7 @@ const QuickViewModal = ({ recipe, onClose }: QuickViewModalProps) => {
               </div>
               <div>
                 <span className="block text-[10px] text-stone-400 uppercase tracking-wider font-bold">
-                  Difficulty
+                  Difficulté
                 </span>
                 <span className="text-sm font-medium text-stone-900">
                   {recipe.difficulty}
@@ -125,14 +125,16 @@ const QuickViewModal = ({ recipe, onClose }: QuickViewModalProps) => {
 
           <div className="flex gap-4">
             <Button asChild className="flex-1 py-6 rounded-full">
-              <Link href={`/recipes/${recipe.slug}`}>View Full Recipe</Link>
+              <Link href={`/recipes/${recipe.slug}`}>
+                Voir la recette complète
+              </Link>
             </Button>
             <Button
               onClick={onClose}
               variant="outline"
               className="rounded-full py-6 px-6"
             >
-              Close
+              Fermer
             </Button>
           </div>
         </div>

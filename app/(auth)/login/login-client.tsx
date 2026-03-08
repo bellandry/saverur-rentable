@@ -28,7 +28,7 @@ export default function AdminLoginClient() {
       });
 
       if (res.error) {
-        const errorMessage = res.error.message || "An error occurred";
+        const errorMessage = res.error.message || "Une erreur est survenue";
         toast.error(errorMessage);
       } else {
         toast.success("Connexion réussie !");
@@ -40,7 +40,7 @@ export default function AdminLoginClient() {
       }
     } catch (err) {
       console.log(err);
-      const errorMessage = "An unexpected error occurred";
+      const errorMessage = "Une erreur inattendue est survenue";
       toast.error(errorMessage);
     } finally {
       setLoading(false);

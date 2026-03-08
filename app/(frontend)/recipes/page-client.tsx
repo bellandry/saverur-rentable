@@ -99,7 +99,7 @@ const RecipesClient = ({ recipes, categories }: RecipesClientProps) => {
             </svg>
             <input
               type="text"
-              placeholder="Search recipes..."
+              placeholder="Rechercher des recettes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-4 py-3 bg-stone-50 border border-stone-100 rounded-full focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all text-sm"

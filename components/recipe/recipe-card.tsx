@@ -39,7 +39,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
               }}
               className="bg-white/90 backdrop-blur-md text-stone-900 px-6 py-2.5 rounded-full text-sm font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-white active:scale-95"
             >
-              Quick View
+              Aperçu rapide
             </Button>
           </div>
 
