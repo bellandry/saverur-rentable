@@ -204,6 +204,7 @@ model HomePageContent {
   // Featured Recipes section
   featuredRecipesEnabled Boolean @default(true)
   featuredRecipesTitle   String  @default("Recettes en Vedette")
+  tendanceRecipeId       String?
 
   // About section
   aboutEnabled    Boolean @default(true)

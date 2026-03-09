@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 export default function HomepageContentPage() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
+  const [recipes, setRecipes] = useState<{ id: string; title: string }[]>([]);
   const [formData, setFormData] = useState({
     // Hero Section
     heroEnabled: true,
@@ -39,6 +40,7 @@ export default function HomepageContentPage() {
     // Featured Recipes Section
     featuredRecipesEnabled: true,
     featuredRecipesTitle: "Recettes en Vedette",
+    tendanceRecipeId: "",
 
     // About Section
     aboutEnabled: true,
@@ -60,9 +62,15 @@ export default function HomepageContentPage() {
 
   const fetchContent = async () => {
     try {
-      const response = await fetch("/api/homepage");
-      const data = await response.json();
+      const [contentRes, recipesRes] = await Promise.all([
+        fetch("/api/homepage"),
+        fetch("/api/recipes?featured=true"),
+      ]);
+      const data = await contentRes.json();
+      const recipesData = await recipesRes.json();
+
       setFormData((prev) => ({ ...prev, ...data }));
+      setRecipes(recipesData);
     } catch (error) {
       console.error("Error fetching content:", error);
     } finally {
@@ -492,26 +500,51 @@ export default function HomepageContentPage() {
           </div>
 
           {formData.featuredRecipesEnabled && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Titre de la section
-              </label>
-              <input
-                type="text"
-                value={formData.featuredRecipesTitle}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    featuredRecipesTitle: e.target.value,
-                  }))
-                }
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
-              />
-              <p className="text-sm text-gray-500 mt-2">
-                Les recettes en vedette sont marquées en cochant &quot;Recette
-                Mise en Avant (Featured)&quot; lors de l&apos;édition d&apos;une
-                recette.
-              </p>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Titre de la section
+                </label>
+                <input
+                  type="text"
+                  value={formData.featuredRecipesTitle}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      featuredRecipesTitle: e.target.value,
+                    }))
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Recette Tendance (Numéro 1)
+                </label>
+                <select
+                  value={formData.tendanceRecipeId || ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      tendanceRecipeId: e.target.value,
+                    }))
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none bg-white"
+                >
+                  <option value="">Aucune (Automatique - Plus récente)</option>
+                  {recipes.map((recipe) => (
+                    <option key={recipe.id} value={recipe.id}>
+                      {recipe.title}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-sm text-gray-500 mt-2">
+                  Sélectionnez la recette qui apparaîtra en premier et en grand
+                  format dans la section. La recette doit être marquée comme
+                  &quot;Mise en Avant (Featured)&quot; pour apparaître ici.
+                </p>
+              </div>
             </div>
           )}
         </div>
