@@ -5,11 +5,13 @@ import { RecipeCollectionCard } from "./recipe/recipe-collection-card";
 interface CollectionsProps {
   title?: string;
   recipes?: Recipe[];
+  description?: string;
 }
 
 const Collections: React.FC<CollectionsProps> = ({
   title = "Menus & Collections",
   recipes = [],
+  description = "",
 }) => {
   return (
     <section className="py-24 bg-darkBrown text-cream overflow-hidden">
@@ -20,8 +22,7 @@ const Collections: React.FC<CollectionsProps> = ({
           </span>
           <h2 className="text-4xl font-serif mb-4">{title}</h2>
           <p className="text-cream/60 max-w-lg mx-auto font-light">
-            Expertly crafted weekly plans and themed collections to inspire your
-            kitchen journey.
+            {description}
           </p>
         </div>
 

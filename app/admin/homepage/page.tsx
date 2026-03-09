@@ -29,6 +29,7 @@ export default function HomepageContentPage() {
     // Collections Section
     collectionsEnabled: true,
     collectionsTitle: "Nos Collections",
+    collectionsDescription: "Découvrez nos collections de recettes",
 
     // Popular Recipes Section
     popularRecipesEnabled: true,
@@ -365,28 +366,40 @@ export default function HomepageContentPage() {
           </div>
 
           {formData.collectionsEnabled && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Titre de la section
-              </label>
-              <input
-                type="text"
-                value={formData.collectionsTitle}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    collectionsTitle: e.target.value,
-                  }))
-                }
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
-              />
-              <p className="text-sm text-gray-500 mt-2">
-                Les collections sont gérées depuis la section
-                &quot;Collections&quot; du tableau de bord. Les recettes font
-                partie d&apos;une collection en cochant la case appropriée lors
-                de l&apos;édition de la recette.
-              </p>
-            </div>
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Titre de la section
+                </label>
+                <input
+                  type="text"
+                  value={formData.collectionsTitle}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      collectionsTitle: e.target.value,
+                    }))
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Description de la section
+                </label>
+                <input
+                  type="text"
+                  value={formData.collectionsDescription}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      collectionsDescription: e.target.value,
+                    }))
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
+                />
+              </div>
+            </>
           )}
         </div>
 
@@ -672,11 +685,11 @@ export default function HomepageContentPage() {
         </div>
 
         {/* Submit Button */}
-        <div className="flex gap-4">
+        <div className="fixed bottom-6 right-6 flex gap-4">
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 bg-terracotta text-white py-4 rounded-lg font-medium hover:bg-darkBrown transition disabled:opacity-50 text-lg"
+            className="flex-1 bg-terracotta text-white py-4 px-6 rounded-full font-medium hover:bg-darkBrown transition disabled:opacity-50 text-lg"
           >
             {loading ? "Enregistrement..." : "Sauvegarder les modifications"}
           </button>
