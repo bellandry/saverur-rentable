@@ -9,7 +9,7 @@ export type PopularRecipesProps = {
 
 export const PopularRecipes = ({
   popularRecipes,
-  title = "Community Favorites",
+  title = "Favoris de la communauté",
 }: PopularRecipesProps) => {
   return (
     <section className="bg-stone-900 container mx-auto text-white rounded-4xl px-6 py-16 md:py-20 overflow-hidden relative">
@@ -20,7 +20,7 @@ export const PopularRecipes = ({
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-amber-500 font-bold tracking-widest uppercase text-xs">
-                Trending Now
+                Tendance
               </span>
             </div>
             <h2 className="text-3xl font-serif md:text-4xl font-bold serif">

@@ -1,5 +1,6 @@
 "use client";
 
+import { validateCoupon } from "@/app/admin/coupons/actions/coupon";
 import { RecipeHero } from "@/components/recipe/recipe-hero";
 import { Button } from "@/components/ui/button";
 import { Recipe } from "@/types";
@@ -7,7 +8,7 @@ import { User } from "better-auth";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 
 interface RecipeDetailProps {
   recipe: Recipe;
@@ -21,7 +22,40 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
   user,
 }) => {
   const router = useRouter();
-  const [isBuying, setIsBuying] = React.useState(false);
+  const [isBuying, setIsBuying] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discountAmount: number;
+    newPrice: number;
+  } | null>(null);
+  const [couponError, setCouponError] = useState("");
+  const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setIsValidatingCoupon(true);
+    setCouponError("");
+
+    try {
+      const res = await validateCoupon(couponCode, recipe.id);
+      if (res.success && res.coupon) {
+        setAppliedCoupon({
+          code: res.coupon.code,
+          discountAmount: res.discountAmount,
+          newPrice: res.newPrice,
+        });
+        setCouponError("");
+      } else {
+        setCouponError(res.error || "Code invalide");
+        setAppliedCoupon(null);
+      }
+    } catch {
+      setCouponError("Erreur de validation");
+    } finally {
+      setIsValidatingCoupon(false);
+    }
+  };
 
   const handlePurchase = async () => {
     if (!user) {
@@ -38,7 +72,10 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ recipeId: recipe.id }),
+        body: JSON.stringify({
+          recipeId: recipe.id,
+          couponCode: appliedCoupon?.code,
+        }),
       });
 
       const data = await response.json();
@@ -62,7 +99,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-sm text-terracotta mb-6">
         <Link href="/recipes" className="hover:underline">
-          Recipes
+          Recettes
         </Link>
         <ChevronRight className="text-terracotta size-4" />
         <Link
@@ -80,22 +117,57 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
       {/* Hero Section */}
       <RecipeHero recipe={recipe} hasPurchased={hasPurchased} />
 
-      {/* Purchase Bar (Stays for action if needed) */}
+      {/* Purchase Bar */}
       {!hasPurchased && recipe.isPremium && (
         <div className="flex flex-col md:flex-row items-center justify-between border-b border-beige pb-10 mb-10 gap-6">
-          <p className="text-darkBrown/60 italic">
-            Débloquez la recette complète avec tous les ingrédients et étapes
-            détaillées.
-          </p>
-          <Button
-            onClick={handlePurchase}
-            disabled={isBuying}
-            className="bg-terracotta text-white px-8 py-4 rounded-xl font-bold hover:bg-darkBrown transition-all shadow-xl shadow-terracotta/20"
-          >
-            {isBuying
-              ? "Redirection..."
-              : `Débloquer la recette (${recipe.price?.toFixed(2)} $)`}
-          </Button>
+          <div className="flex-1">
+            <p className="text-darkBrown/60 italic mb-4 md:mb-0">
+              Débloquez la recette complète avec tous les ingrédients et étapes
+              détaillées.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 w-full md:w-auto">
+            <p className="text-darkBrown/60 italic">
+              Vous avez un code promo ?
+            </p>
+            <div className="flex items-center gap-2 w-full md:w-auto">
+              <input
+                type="text"
+                placeholder="Code promo"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                className="w-full md:w-48 bg-white rounded-lg border border-beige px-3 py-2 text-sm focus:outline-none focus:border-terracotta"
+              />
+              <Button
+                onClick={handleApplyCoupon}
+                disabled={isValidatingCoupon || !couponCode}
+                variant="outline"
+                className="border-beige text-darkBrown shrink-0"
+              >
+                {isValidatingCoupon ? "..." : "Appliquer"}
+              </Button>
+            </div>
+            {couponError && (
+              <p className="text-red-500 text-xs w-full text-right">
+                {couponError}
+              </p>
+            )}
+            {appliedCoupon && (
+              <p className="text-green-600 text-xs w-full text-right">
+                Code {appliedCoupon.code} appliqué (-
+                {appliedCoupon.discountAmount.toFixed(2)} / €)
+              </p>
+            )}
+            <Button
+              onClick={handlePurchase}
+              disabled={isBuying}
+              className="bg-terracotta w-full text-white px-8 py-4 rounded-xl font-bold hover:bg-darkBrown transition-all shadow-xl shadow-terracotta/20"
+            >
+              {isBuying
+                ? "Redirection..."
+                : `Débloquer la recette (${(appliedCoupon?.newPrice ?? recipe.price ?? 0).toFixed(2)} €)`}
+            </Button>
+          </div>
         </div>
       )}
 
@@ -104,7 +176,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
         {/* Left Column: Ingredients */}
         <aside className="md:col-span-4 lg:col-span-3">
           <h3 className="text-2xl font-serif font-bold mb-6 border-b-2 border-terracotta w-fit pr-4 text-darkBrown">
-            Ingredients
+            Ingrédients
           </h3>
           <ul className="space-y-4">
             {showContent ? (
@@ -131,18 +203,19 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
           {/* Newsletter Card */}
           <div className="mt-12 p-6 bg-beige/20 rounded-xl border border-beige">
             <h4 className="font-serif font-bold text-lg mb-2 text-darkBrown">
-              Love this recipe?
+              Vous aimez cette recette ?
             </h4>
             <p className="text-sm text-darkBrown/60 mb-4">
-              Get our weekly artisan cooking tips delivered to your inbox.
+              Recevez nos conseils de cuisine artisanale chaque semaine dans
+              votre boîte mail.
             </p>
             <input
               className="w-full text-sm rounded-lg border-beige bg-white focus:border-terracotta focus:ring-terracotta mb-3 px-3 py-2 outline-none"
-              placeholder="Email address"
+              placeholder="Adresse e-mail"
               type="email"
             />
             <button className="w-full bg-terracotta text-white py-2 rounded-lg font-bold text-sm hover:bg-darkBrown transition-colors uppercase tracking-widest">
-              Join the Club
+              Rejoindre le Club
             </button>
           </div>
         </aside>
@@ -150,7 +223,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
         {/* Right Column: Preparation */}
         <section className="md:col-span-8 lg:col-span-9">
           <h3 className="text-2xl font-serif font-bold mb-8 border-b-2 border-terracotta w-fit pr-4 text-darkBrown">
-            Preparation
+            Préparation
           </h3>
           <div className="space-y-12">
             {showContent ? (
@@ -162,10 +235,10 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
                     </span>
                     <h4 className="text-xl font-serif font-bold uppercase tracking-wide text-terracotta/80">
                       {idx === 0
-                        ? "Prep and Cook"
+                        ? "Préparation et Cuisson"
                         : idx === recipe.instructions!.length - 1
-                          ? "Finish and Serve"
-                          : `Step ${idx + 1}`}
+                          ? "Finition et Service"
+                          : `Étape ${idx + 1}`}
                     </h4>
                   </div>
                   <div
@@ -206,7 +279,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
                   >
                     {isBuying
                       ? "Redirection..."
-                      : `Acheter pour ${recipe.price?.toFixed(2)} €`}
+                      : `Acheter pour ${(appliedCoupon?.newPrice ?? recipe.price ?? 0).toFixed(2)} €`}
                   </Button>
                 </div>
               </div>
@@ -217,14 +290,15 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
               <div className="flex items-center gap-2 mb-3 text-sage">
                 <span className="material-symbols-outlined">lightbulb</span>
                 <span className="font-bold uppercase tracking-widest text-sm">
-                  Chef&apos;s Secret
+                  Secret du Chef
                 </span>
               </div>
               <p className="text-lg italic font-medium leading-relaxed text-darkBrown/80">
-                &quot;For the best results with this{" "}
-                {recipe.title.toLowerCase()}, ensure all your ingredients are at
-                room temperature. The secret is in the layering of flavors—never
-                rush the seasoning process.&quot;
+                &quot;Pour obtenir les meilleurs résultats avec ce{" "}
+                {recipe.title.toLowerCase()}, assurez-vous que tous vos
+                ingrédients sont à température ambiante. Le secret réside dans
+                la superposition des saveurs — ne précipitez jamais
+                l&apos;assaisonnement.&quot;
               </p>
             </div>
           </div>
@@ -241,10 +315,10 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
               Artisanal
             </span>
             <span className="px-3 py-1 bg-white border border-beige rounded-full text-sm text-darkBrown/60 hover:border-terracotta hover:text-terracotta transition-colors">
-              Homemade
+              Fait Maison
             </span>
             <span className="px-3 py-1 bg-white border border-beige rounded-full text-sm text-darkBrown/60 hover:border-terracotta hover:text-terracotta transition-colors">
-              Seasonal
+              De Saison
             </span>
           </div>
         </section>

@@ -37,7 +37,7 @@ export const RecipeHero: React.FC<RecipeHeroProps> = ({
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-tighter font-bold text-terracotta/60">
-                  Prep Time
+                  Préparation
                 </p>
                 <p className="font-bold text-darkBrown text-sm">
                   {recipe.prepTime}
@@ -50,7 +50,7 @@ export const RecipeHero: React.FC<RecipeHeroProps> = ({
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-tighter font-bold text-terracotta/60">
-                  Cook Time
+                  Cuisson
                 </p>
                 <p className="font-bold text-darkBrown text-sm">
                   {recipe.cookTime || "30m"}
@@ -63,7 +63,7 @@ export const RecipeHero: React.FC<RecipeHeroProps> = ({
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-tighter font-bold text-terracotta/60">
-                  Difficulty
+                  Difficulté
                 </p>
                 <p className="font-bold text-darkBrown text-sm">
                   {recipe.difficulty}
@@ -76,7 +76,7 @@ export const RecipeHero: React.FC<RecipeHeroProps> = ({
               </div>
               <div>
                 <p className="text-[10px] uppercase tracking-tighter font-bold text-terracotta/60">
-                  Servings
+                  Portions
                 </p>
                 <p className="font-bold text-darkBrown text-sm">
                   {recipe.servings ? `${recipe.servings} Pers.` : "--"}

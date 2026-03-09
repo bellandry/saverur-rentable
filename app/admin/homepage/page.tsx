@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 export default function HomepageContentPage() {
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
+  const [recipes, setRecipes] = useState<{ id: string; title: string }[]>([]);
   const [formData, setFormData] = useState({
     // Hero Section
     heroEnabled: true,
@@ -29,6 +30,7 @@ export default function HomepageContentPage() {
     // Collections Section
     collectionsEnabled: true,
     collectionsTitle: "Nos Collections",
+    collectionsDescription: "Découvrez nos collections de recettes",
 
     // Popular Recipes Section
     popularRecipesEnabled: true,
@@ -38,6 +40,7 @@ export default function HomepageContentPage() {
     // Featured Recipes Section
     featuredRecipesEnabled: true,
     featuredRecipesTitle: "Recettes en Vedette",
+    tendanceRecipeId: "",
 
     // About Section
     aboutEnabled: true,
@@ -59,9 +62,15 @@ export default function HomepageContentPage() {
 
   const fetchContent = async () => {
     try {
-      const response = await fetch("/api/homepage");
-      const data = await response.json();
+      const [contentRes, recipesRes] = await Promise.all([
+        fetch("/api/homepage"),
+        fetch("/api/recipes?featured=true"),
+      ]);
+      const data = await contentRes.json();
+      const recipesData = await recipesRes.json();
+
       setFormData((prev) => ({ ...prev, ...data }));
+      setRecipes(recipesData);
     } catch (error) {
       console.error("Error fetching content:", error);
     } finally {
@@ -274,7 +283,7 @@ export default function HomepageContentPage() {
               />
               <p className="text-sm text-gray-500 mt-2">
                 Les catégories affichées sont gérées depuis la section
-                &quot;Catégories&quot; du dashboard.
+                &quot;Catégories&quot; du tableau de bord.
               </p>
             </div>
           )}
@@ -365,28 +374,40 @@ export default function HomepageContentPage() {
           </div>
 
           {formData.collectionsEnabled && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Titre de la section
-              </label>
-              <input
-                type="text"
-                value={formData.collectionsTitle}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    collectionsTitle: e.target.value,
-                  }))
-                }
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
-              />
-              <p className="text-sm text-gray-500 mt-2">
-                Les collections sont gérées depuis la section
-                &quot;Collections&quot; du dashboard. Les recettes font partie
-                d&apos;une collection en cochant la case appropriée lors de
-                l&apos;édition de la recette.
-              </p>
-            </div>
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Titre de la section
+                </label>
+                <input
+                  type="text"
+                  value={formData.collectionsTitle}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      collectionsTitle: e.target.value,
+                    }))
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Description de la section
+                </label>
+                <input
+                  type="text"
+                  value={formData.collectionsDescription}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      collectionsDescription: e.target.value,
+                    }))
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
+                />
+              </div>
+            </>
           )}
         </div>
 
@@ -479,26 +500,51 @@ export default function HomepageContentPage() {
           </div>
 
           {formData.featuredRecipesEnabled && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Titre de la section
-              </label>
-              <input
-                type="text"
-                value={formData.featuredRecipesTitle}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    featuredRecipesTitle: e.target.value,
-                  }))
-                }
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
-              />
-              <p className="text-sm text-gray-500 mt-2">
-                Les recettes en vedette sont marquées en cochant &quot;Recette
-                Mise en Avant (Featured)&quot; lors de l&apos;édition d&apos;une
-                recette.
-              </p>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Titre de la section
+                </label>
+                <input
+                  type="text"
+                  value={formData.featuredRecipesTitle}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      featuredRecipesTitle: e.target.value,
+                    }))
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Recette Tendance (Numéro 1)
+                </label>
+                <select
+                  value={formData.tendanceRecipeId || ""}
+                  onChange={(e) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      tendanceRecipeId: e.target.value,
+                    }))
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-terracotta focus:border-transparent outline-none bg-white"
+                >
+                  <option value="">Aucune (Automatique - Plus récente)</option>
+                  {recipes.map((recipe) => (
+                    <option key={recipe.id} value={recipe.id}>
+                      {recipe.title}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-sm text-gray-500 mt-2">
+                  Sélectionnez la recette qui apparaîtra en premier et en grand
+                  format dans la section. La recette doit être marquée comme
+                  &quot;Mise en Avant (Featured)&quot; pour apparaître ici.
+                </p>
+              </div>
             </div>
           )}
         </div>
@@ -672,11 +718,11 @@ export default function HomepageContentPage() {
         </div>
 
         {/* Submit Button */}
-        <div className="flex gap-4">
+        <div className="fixed bottom-6 right-6 flex gap-4">
           <button
             type="submit"
             disabled={loading}
-            className="flex-1 bg-terracotta text-white py-4 rounded-lg font-medium hover:bg-darkBrown transition disabled:opacity-50 text-lg"
+            className="flex-1 bg-terracotta text-white py-4 px-6 rounded-full font-medium hover:bg-darkBrown transition disabled:opacity-50 text-lg"
           >
             {loading ? "Enregistrement..." : "Sauvegarder les modifications"}
           </button>

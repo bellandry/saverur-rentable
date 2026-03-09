@@ -22,6 +22,10 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
       <div className={`group cursor-pointer`}>
         <div
           className={`relative overflow-hidden rounded-2xl aspect-square mb-4 md:mb-0`}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleQuickView();
+          }}
         >
           <Image
             src={recipe.image}
@@ -32,14 +36,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
 
           {/* Hover Overlay with Quick View Button */}
           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleQuickView();
-              }}
-              className="bg-white/90 backdrop-blur-md text-stone-900 px-6 py-2.5 rounded-full text-sm font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-white active:scale-95"
-            >
-              Quick View
+            <Button className="bg-white/90 backdrop-blur-md text-stone-900 px-6 py-2.5 rounded-full text-sm font-bold shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:bg-white active:scale-95">
+              Aperçu rapide
             </Button>
           </div>
 

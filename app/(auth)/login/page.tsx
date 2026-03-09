@@ -8,7 +8,7 @@ export default async function LoginPage() {
     headers: await headers(),
   });
 
-  // Si déjà connecté, rediriger vers le dashboard
+  // Si déjà connecté, rediriger vers le tableau de bord
   if (session) {
     redirect("/admin");
   }

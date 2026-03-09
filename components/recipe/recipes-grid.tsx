@@ -23,7 +23,7 @@ const RecipeGrid = ({
             asChild
             className="text-xs bg-transparent hover:bg-transparent font-bold text-terracotta uppercase tracking-widest hover:opacity-80 transition-all border-b border-terracotta/20 pb-0.5"
           >
-            <Link href="/recipes">View All</Link>
+            <Link href="/recipes">Voir tout</Link>
           </Button>
         </div>
 

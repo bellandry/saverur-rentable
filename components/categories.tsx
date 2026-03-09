@@ -13,7 +13,7 @@ const Categories = ({ categories }: CategoriesProps) => {
         <div className="flex items-center justify-start space-x-4 overflow-x-auto pb-4">
           <button className="flex items-center space-x-3 px-6 py-3 rounded-full text-xs font-bold transition-all uppercase tracking-widest bg-sage text-white shadow-md">
             <span className="text-lg">🍴</span>
-            <span>All Recipes</span>
+            <span>Toutes les recettes</span>
           </button>
           {categories?.map((cat) => (
             <Link

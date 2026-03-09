@@ -43,8 +43,17 @@ export async function POST(request: Request) {
           userId: metadata.userId,
           recipeId: metadata.recipeId,
           amount: (session.amount_total || 0) / 100,
+          ...(metadata.couponId && { couponId: metadata.couponId }),
         },
       });
+
+      if (metadata.couponId) {
+        await prisma.coupon.update({
+          where: { id: metadata.couponId },
+          data: { usedCount: { increment: 1 } },
+        });
+      }
+
       console.log(
         `Purchase recorded for user ${metadata.userId} and recipe ${metadata.recipeId}`,
       );

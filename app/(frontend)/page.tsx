@@ -68,6 +68,7 @@ export default async function Home() {
         <Collections
           recipes={collectionRecipes}
           title={homeContent.collectionsTitle}
+          description={homeContent.collectionsDescription}
         />
       )}
 

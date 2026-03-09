@@ -128,10 +128,32 @@ export async function getPopularRecipes(limit: number): Promise<Recipe[]> {
 
 export async function getFeaturedRecipes(): Promise<Recipe[]> {
   try {
-    const recipes = await prisma.recipe.findMany({
+    const homeContent = await prisma.homePageContent.findFirst();
+    const tendanceRecipeId = homeContent?.tendanceRecipeId;
+
+    let recipes = await prisma.recipe.findMany({
       where: { isFeatured: true, status: "published" },
       include: { category: true },
     });
+
+    if (tendanceRecipeId) {
+      const index = recipes.findIndex((r) => r.id === tendanceRecipeId);
+      if (index !== -1) {
+        const [recipe] = recipes.splice(index, 1);
+        recipes.unshift(recipe);
+      } else {
+        const tendanceRecipe = await prisma.recipe.findUnique({
+          where: { id: tendanceRecipeId },
+          include: { category: true },
+        });
+        if (tendanceRecipe && tendanceRecipe.status === "published") {
+          recipes.unshift(tendanceRecipe);
+        }
+      }
+    }
+
+    recipes = recipes.slice(0, 4);
+
     return Promise.all(recipes.map(transformRecipe));
   } catch (error) {
     console.error("Error fetching featured recipes:", error);

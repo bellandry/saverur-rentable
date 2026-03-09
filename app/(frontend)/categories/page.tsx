@@ -20,11 +20,12 @@ export default async function CategoriesPage() {
     <div className="container mx-auto pt-32 pb-24 min-h-screen bg-cream">
       <section className="mb-24">
         <h1 className="text-4xl text-darkBrown font-serif md:text-5xl font-bold mb-6">
-          Curated Categories
+          Catégories Sélectionnées
         </h1>
         <p className="text-stone-500 md:text-lg max-w-2xl font-light leading-relaxed mb-16">
-          Each category is a curated volume of flavor, designed to guide you
-          through specific culinary themes and dietary preferences.
+          Chaque catégorie est un volume de saveurs soigneusement choisi, conçu
+          pour vous guider à travers des thèmes culinaires spécifiques et des
+          préférences alimentaires.
         </p>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
@@ -57,7 +58,7 @@ export default async function CategoriesPage() {
                   {category.description}
                 </p>
                 <div className="text-stone-900 font-bold text-sm flex items-center gap-2 group/btn">
-                  Explore Category
+                  Explorer la catégorie
                   <ArrowRight className="size-4" />
                 </div>
               </div>
@@ -70,22 +71,24 @@ export default async function CategoriesPage() {
       <section className="bg-amber-50 rounded-[48px] p-12 md:p-24 flex flex-col md:flex-row items-center gap-12">
         <div className="md:w-1/2">
           <span className="text-amber-700 font-bold tracking-widest uppercase text-xs mb-4 block">
-            Seasonal Special
+            Spécial Saison
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-stone-900 serif mb-6">
-            Autumn Harvest Favorites
+            Favoris de la Récolte d&apos;Automne
           </h2>
           <p className="text-stone-600 text-lg font-light leading-relaxed mb-8">
-            As the leaves turn, we invite you to explore our warmest collection
-            yet. Featuring earthy spices, roasted vegetables, and comfort that
-            feeds the soul.
+            Alors que les feuilles tournent, nous vous invitons à explorer notre
+            collection la plus chaleureuse. Avec des épices terreuses, des
+            légumes rôtis et un réconfort qui nourrit l&apos;âme.
           </p>
           <Button
             asChild
             size={"lg"}
             className="bg-stone-900 text-white px-8 py-4 rounded-full font-bold hover:bg-stone-800 transition-all shadow-xl active:scale-95"
           >
-            <Link href="/recipes/?category=autumn">View Autumn Guide</Link>
+            <Link href="/recipes/?category=automne">
+              Voir le guide d&apos;automne
+            </Link>
           </Button>
         </div>
         <div className="md:w-1/2 grid grid-cols-2 gap-4">
