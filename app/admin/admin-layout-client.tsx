@@ -10,6 +10,7 @@ import {
   LogOut,
   Menu,
   Settings,
+  Ticket,
   X,
 } from "lucide-react";
 import Link from "next/link";
@@ -28,6 +29,7 @@ export default function AdminLayoutClient({
     { name: "Tableau de bord", href: "/admin", icon: Home },
     { name: "Recettes", href: "/admin/recipes", icon: BookOpen },
     { name: "Catégories", href: "/admin/categories", icon: FolderOpen },
+    { name: "Coupons", href: "/admin/coupons", icon: Ticket },
     { name: "Paiements", href: "/admin/payments", icon: DollarSign },
     { name: "Page d'accueil", href: "/admin/homepage", icon: Settings },
     { name: "À Propos", href: "/admin/about", icon: Settings },
