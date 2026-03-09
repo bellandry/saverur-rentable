@@ -14,7 +14,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
-    const { recipeId } = await request.json();
+    const { recipeId, couponCode } = await request.json();
 
     if (!recipeId) {
       return NextResponse.json(
@@ -34,12 +34,40 @@ export async function POST(request: Request) {
       );
     }
 
-    const price = recipe.price || 0;
+    let price = recipe.price || 0;
     if (price <= 0) {
       return NextResponse.json(
         { error: "Cette recette premium n'a pas de prix défini" },
         { status: 400 },
       );
+    }
+
+    let appliedCouponId: string | undefined;
+
+    // Validate coupon if provided
+    if (couponCode) {
+      // Import dynamically or ensure it exists
+      const { validateCoupon } =
+        await import("@/app/admin/coupons/actions/coupon");
+      const validationResult = await validateCoupon(couponCode, recipe.id);
+
+      if (!validationResult.success || !validationResult.coupon) {
+        return NextResponse.json(
+          { error: validationResult.error || "Code promo invalide" },
+          { status: 400 },
+        );
+      }
+
+      price = validationResult.newPrice;
+
+      // Get the coupon ID to pass it in metadata
+      const coupon = await prisma.coupon.findUnique({
+        where: { code: couponCode },
+        select: { id: true },
+      });
+      if (coupon) {
+        appliedCouponId = coupon.id;
+      }
     }
 
     // Check if user already purchased the recipe
@@ -81,6 +109,7 @@ export async function POST(request: Request) {
       metadata: {
         recipeId: recipe.id,
         userId: session.user.id,
+        ...(appliedCouponId && { couponId: appliedCouponId }),
       },
     });
 
