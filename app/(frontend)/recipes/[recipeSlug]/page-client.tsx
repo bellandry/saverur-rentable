@@ -1,5 +1,6 @@
 "use client";
 
+import { validateCoupon } from "@/app/admin/coupons/actions/coupon";
 import { RecipeHero } from "@/components/recipe/recipe-hero";
 import { Button } from "@/components/ui/button";
 import { Recipe } from "@/types";
@@ -7,7 +8,7 @@ import { User } from "better-auth";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 
 interface RecipeDetailProps {
   recipe: Recipe;
@@ -21,7 +22,40 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
   user,
 }) => {
   const router = useRouter();
-  const [isBuying, setIsBuying] = React.useState(false);
+  const [isBuying, setIsBuying] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discountAmount: number;
+    newPrice: number;
+  } | null>(null);
+  const [couponError, setCouponError] = useState("");
+  const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setIsValidatingCoupon(true);
+    setCouponError("");
+
+    try {
+      const res = await validateCoupon(couponCode, recipe.id);
+      if (res.success && res.coupon) {
+        setAppliedCoupon({
+          code: res.coupon.code,
+          discountAmount: res.discountAmount,
+          newPrice: res.newPrice,
+        });
+        setCouponError("");
+      } else {
+        setCouponError(res.error || "Code invalide");
+        setAppliedCoupon(null);
+      }
+    } catch {
+      setCouponError("Erreur de validation");
+    } finally {
+      setIsValidatingCoupon(false);
+    }
+  };
 
   const handlePurchase = async () => {
     if (!user) {
@@ -38,7 +72,10 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ recipeId: recipe.id }),
+        body: JSON.stringify({
+          recipeId: recipe.id,
+          couponCode: appliedCoupon?.code,
+        }),
       });
 
       const data = await response.json();
@@ -80,22 +117,57 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
       {/* Hero Section */}
       <RecipeHero recipe={recipe} hasPurchased={hasPurchased} />
 
-      {/* Purchase Bar (Stays for action if needed) */}
+      {/* Purchase Bar */}
       {!hasPurchased && recipe.isPremium && (
         <div className="flex flex-col md:flex-row items-center justify-between border-b border-beige pb-10 mb-10 gap-6">
-          <p className="text-darkBrown/60 italic">
-            Débloquez la recette complète avec tous les ingrédients et étapes
-            détaillées.
-          </p>
-          <Button
-            onClick={handlePurchase}
-            disabled={isBuying}
-            className="bg-terracotta text-white px-8 py-4 rounded-xl font-bold hover:bg-darkBrown transition-all shadow-xl shadow-terracotta/20"
-          >
-            {isBuying
-              ? "Redirection..."
-              : `Débloquer la recette (${recipe.price?.toFixed(2)} $)`}
-          </Button>
+          <div className="flex-1">
+            <p className="text-darkBrown/60 italic mb-4 md:mb-0">
+              Débloquez la recette complète avec tous les ingrédients et étapes
+              détaillées.
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 w-full md:w-auto">
+            <p className="text-darkBrown/60 italic">
+              Vous avez un code promo ?
+            </p>
+            <div className="flex items-center gap-2 w-full md:w-auto">
+              <input
+                type="text"
+                placeholder="Code promo"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                className="w-full md:w-48 bg-white rounded-lg border border-beige px-3 py-2 text-sm focus:outline-none focus:border-terracotta"
+              />
+              <Button
+                onClick={handleApplyCoupon}
+                disabled={isValidatingCoupon || !couponCode}
+                variant="outline"
+                className="border-beige text-darkBrown shrink-0"
+              >
+                {isValidatingCoupon ? "..." : "Appliquer"}
+              </Button>
+            </div>
+            {couponError && (
+              <p className="text-red-500 text-xs w-full text-right">
+                {couponError}
+              </p>
+            )}
+            {appliedCoupon && (
+              <p className="text-green-600 text-xs w-full text-right">
+                Code {appliedCoupon.code} appliqué (-
+                {appliedCoupon.discountAmount.toFixed(2)} / €)
+              </p>
+            )}
+            <Button
+              onClick={handlePurchase}
+              disabled={isBuying}
+              className="bg-terracotta w-full text-white px-8 py-4 rounded-xl font-bold hover:bg-darkBrown transition-all shadow-xl shadow-terracotta/20"
+            >
+              {isBuying
+                ? "Redirection..."
+                : `Débloquer la recette (${(appliedCoupon?.newPrice ?? recipe.price ?? 0).toFixed(2)} €)`}
+            </Button>
+          </div>
         </div>
       )}
 
@@ -207,7 +279,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
                   >
                     {isBuying
                       ? "Redirection..."
-                      : `Acheter pour ${recipe.price?.toFixed(2)} €`}
+                      : `Acheter pour ${(appliedCoupon?.newPrice ?? recipe.price ?? 0).toFixed(2)} €`}
                   </Button>
                 </div>
               </div>
