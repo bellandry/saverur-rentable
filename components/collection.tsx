@@ -14,7 +14,10 @@ const Collections: React.FC<CollectionsProps> = ({
   description = "",
 }) => {
   return (
-    <section className="py-24 bg-darkBrown text-cream overflow-hidden">
+    <section
+      className="py-24 bg-darkBrown text-cream overflow-hidden"
+      id="collection"
+    >
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <span className="text-terracotta uppercase tracking-[0.3em] font-semibold text-xs mb-4 block">

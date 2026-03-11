@@ -1,26 +1,46 @@
 "use client";
 
+import { Facebook, Instagram, Youtube } from "lucide-react";
+import Link from "next/link";
+
+const socials = [
+  {
+    label: "Facebook",
+    link: "https://",
+    icon: Facebook,
+  },
+  {
+    label: "Instagram",
+    link: "https://",
+    icon: Instagram,
+  },
+  {
+    label: "Youtube",
+    link: "https://",
+    icon: Youtube,
+  },
+];
+
 const Footer = () => {
   return (
     <footer className="bg-cream pt-24 pb-12 border-t border-beige">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-          <div className="col-span-1 md:col-span-1">
-            <h3 className="text-2xl font-serif font-bold text-darkBrown mb-6">
+          <div className="col-span-1 flex flex-col gap-2">
+            <Link
+              href="/"
+              className="text-2xl font-serif font-bold text-darkBrown mb-6"
+            >
               Saveurs <span className="text-terracotta">&</span> Rentables
-            </h3>
-            <p className="text-darkBrown/60 text-sm font-light leading-relaxed mb-8">
-              Célébrer l&apos;art de la cuisine authentique et la beauté des
-              moments partagés autour d&apos;une table généreuse et accessible.
-            </p>
-            <div className="flex space-x-4">
-              {["FB", "IG", "PT", "YT"].map((social) => (
+            </Link>
+            <div className="flex space-x-4 ">
+              {socials.map((social) => (
                 <a
-                  key={social}
-                  href="#"
+                  key={social.label}
+                  href={social.link}
                   className="w-10 h-10 rounded-full border border-beige flex items-center justify-center text-[10px] font-bold text-darkBrown/60 hover:bg-terracotta hover:text-white hover:border-terracotta transition-all"
                 >
-                  {social}
+                  <social.icon className="size-4" />
                 </a>
               ))}
             </div>
@@ -32,24 +52,28 @@ const Footer = () => {
             </h4>
             <ul className="space-y-4 text-sm text-darkBrown/60 font-light">
               <li>
-                <a href="#" className="hover:text-terracotta transition-colors">
-                  Archives Recettes
-                </a>
+                <Link
+                  href="/recipes"
+                  className="hover:text-terracotta transition-colors"
+                >
+                  Toutes nos Recettes
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-terracotta transition-colors">
-                  Menus de Saison
-                </a>
+                <Link
+                  href="/#popular"
+                  className="hover:text-terracotta transition-colors"
+                >
+                  Les plus populaires
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-terracotta transition-colors">
+                <Link
+                  href="/#collection"
+                  className="hover:text-terracotta transition-colors"
+                >
                   Collection Premium
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-terracotta transition-colors">
-                  Boutique Cuisine
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
