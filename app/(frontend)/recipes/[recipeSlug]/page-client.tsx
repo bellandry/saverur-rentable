@@ -155,7 +155,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
             {appliedCoupon && (
               <p className="text-green-600 text-xs w-full text-right">
                 Code {appliedCoupon.code} appliqué (-
-                {appliedCoupon.discountAmount.toFixed(2)} / €)
+                {appliedCoupon.discountAmount.toFixed(2)} / $)
               </p>
             )}
             <Button
@@ -165,7 +165,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
             >
               {isBuying
                 ? "Redirection..."
-                : `Débloquer la recette (${(appliedCoupon?.newPrice ?? recipe.price ?? 0).toFixed(2)} €)`}
+                : `Débloquer la recette (${(appliedCoupon?.newPrice ?? recipe.price ?? 0).toFixed(2)} $)`}
             </Button>
           </div>
         </div>
@@ -279,7 +279,7 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
                   >
                     {isBuying
                       ? "Redirection..."
-                      : `Acheter pour ${(appliedCoupon?.newPrice ?? recipe.price ?? 0).toFixed(2)} €`}
+                      : `Acheter pour ${(appliedCoupon?.newPrice ?? recipe.price ?? 0).toFixed(2)} $`}
                   </Button>
                 </div>
               </div>

@@ -134,7 +134,7 @@ export const GalleryDatas = ({ recipe, hasPurchased }: GalleryDatasProps) => {
           )}
           {recipe.isPremium && !hasPurchased && recipe.price && (
             <span className="bg-terracotta text-white px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-terracotta/20">
-              {recipe.price.toFixed(2)} €
+              {recipe.price.toFixed(2)} $
             </span>
           )}
         </div>

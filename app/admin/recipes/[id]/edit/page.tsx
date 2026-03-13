@@ -549,7 +549,7 @@ export default function EditRecipePage() {
             {formData.isPremium && (
               <div className="flex items-center gap-2">
                 <label className="text-sm font-medium text-gray-700">
-                  Prix (€) *
+                  Prix ($) *
                 </label>
                 <input
                   type="number"

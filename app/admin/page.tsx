@@ -62,7 +62,7 @@ export default function AdminDashboard() {
     },
     {
       name: "Paiements",
-      value: `${stats.purchases} (${stats.revenue.toFixed(2)}€)`,
+      value: `${stats.purchases} (${stats.revenue.toFixed(2)}$)`,
       icon: CreditCard,
       color: "bg-darkBrown",
       href: "/admin/payments",
