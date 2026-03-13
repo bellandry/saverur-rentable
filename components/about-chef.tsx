@@ -45,7 +45,7 @@ const About = ({ title, text, image, buttonText, buttonLink }: AboutProps) => {
 
           <div className="flex-1 text-center lg:text-left space-y-6">
             <span className="text-terracotta uppercase tracking-[0.3em] font-bold text-xs block">
-              Meet the Chef
+              A propos du Chef
             </span>
             <h2 className="text-4xl md:text-5xl font-serif font-bold text-darkBrown leading-tight">
               {title}
@@ -56,7 +56,7 @@ const About = ({ title, text, image, buttonText, buttonLink }: AboutProps) => {
             <div className="pt-6">
               <Button
                 asChild
-                className="bg-darkBrown text-white px-10 py-4 rounded-sm text-sm font-bold hover:bg-terracotta transition-all shadow-lg uppercase tracking-widest"
+                className="bg-darkBrown text-white px-10 py-6 rounded-sm text-sm font-semibold hover:bg-terracotta transition-all shadow-lg uppercase tracking-widest"
               >
                 <Link href={buttonLink}>{buttonText}</Link>
               </Button>

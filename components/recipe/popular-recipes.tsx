@@ -12,7 +12,10 @@ export const PopularRecipes = ({
   title = "Favoris de la communauté",
 }: PopularRecipesProps) => {
   return (
-    <section className="bg-stone-900 container mx-auto text-white rounded-4xl px-6 py-16 md:py-20 overflow-hidden relative">
+    <section
+      id="popular"
+      className="bg-stone-900 container mx-auto text-white rounded-4xl px-6 py-16 md:py-20 overflow-hidden relative"
+    >
       <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] -mr-48 -mt-48"></div>
 
       <div className="max-w-6xl mx-auto relative z-10">

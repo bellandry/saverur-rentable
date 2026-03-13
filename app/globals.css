@@ -125,6 +125,10 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth !important;
+  }
+
   body {
     background-color: #faf7f2;
     color: #3e2c23;
