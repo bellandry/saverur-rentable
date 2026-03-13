@@ -30,7 +30,7 @@ const ContactForm = () => {
     <section id="contact" className="py-32 bg-sage/10 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row border border-beige/50">
-          <div className="md:w-1/2 p-12 space-y-6 bg-beige/10">
+          <div className="md:w-1/2 p-6 md:p-12 space-y-6 bg-beige/10">
             <h2 className="text-4xl font-serif text-darkBrown">
               Contactez-nous
             </h2>
@@ -68,7 +68,7 @@ const ContactForm = () => {
             </ul>
           </div>
 
-          <div className="md:w-1/2 p-12 bg-cream flex flex-col justify-center">
+          <div className="md:w-1/2 p-6 md:p-12 bg-cream flex flex-col justify-center">
             <form action={formAction} className="space-y-4">
               <div>
                 <label
