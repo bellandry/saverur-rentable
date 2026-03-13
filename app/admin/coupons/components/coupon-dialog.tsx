@@ -123,7 +123,7 @@ export function CouponDialog({
                       <SelectItem value="PERCENTAGE">
                         Pourcentage (%)
                       </SelectItem>
-                      <SelectItem value="FIXED">Montant fixe (€)</SelectItem>
+                      <SelectItem value="FIXED">Montant fixe ($)</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
@@ -138,7 +138,7 @@ export function CouponDialog({
                   {...register("discountValue", { valueAsNumber: true })}
                 />
                 <div className="absolute right-3 top-2.5 text-gray-500">
-                  {discountType === "PERCENTAGE" ? "%" : "€"}
+                  {discountType === "PERCENTAGE" ? "%" : "$"}
                 </div>
               </div>
               {errors.discountValue && (

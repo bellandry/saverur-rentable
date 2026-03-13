@@ -48,7 +48,7 @@ export function CouponTable({
                   </td>
                   <td className="px-6 py-4">
                     {coupon.discountValue}{" "}
-                    {coupon.discountType === "PERCENTAGE" ? "%" : "€"}
+                    {coupon.discountType === "PERCENTAGE" ? "%" : "$"}
                   </td>
                   <td className="px-6 py-4">
                     {coupon.usedCount} / {coupon.maxUses || "∞"}

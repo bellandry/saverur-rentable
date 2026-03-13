@@ -93,7 +93,7 @@ export async function POST(request: Request) {
       line_items: [
         {
           price_data: {
-            currency: "eur",
+            currency: "cad",
             product_data: {
               name: recipe.title,
               description: `Accès premium à la recette : ${recipe.title}`,

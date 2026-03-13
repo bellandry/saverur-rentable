@@ -33,6 +33,7 @@ export default function AdminLayoutClient({
     { name: "Paiements", href: "/admin/payments", icon: DollarSign },
     { name: "Page d'accueil", href: "/admin/homepage", icon: Settings },
     { name: "À Propos", href: "/admin/about", icon: Settings },
+    { name: "Réseaux Sociaux", href: "/admin/social-links", icon: Settings },
   ];
 
   const handleLogout = async () => {

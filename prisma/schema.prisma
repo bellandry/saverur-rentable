@@ -262,3 +262,16 @@ model Verification {
   @@index([identifier])
   @@map("verification")
 }
+model SiteSettings {
+  id String @id @default(cuid())
+
+  // Social Media Links
+  facebook  String @default("")
+  instagram String @default("")
+  youtube   String @default("")
+  twitter   String @default("")
+  pinterest String @default("")
+  tiktok    String @default("")
+
+  updatedAt DateTime @updatedAt
+}

@@ -1,27 +1,58 @@
 "use client";
 
-import { Facebook, Instagram, Youtube } from "lucide-react";
+import {
+  Facebook,
+  Instagram,
+  Music2, // For TikTok
+  Pin,
+  Twitter,
+  Youtube,
+} from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const socials = [
-  {
-    label: "Facebook",
-    link: "https://",
-    icon: Facebook,
-  },
-  {
-    label: "Instagram",
-    link: "https://",
-    icon: Instagram,
-  },
-  {
-    label: "Youtube",
-    link: "https://",
-    icon: Youtube,
-  },
-];
+interface SocialLinks {
+  facebook?: string;
+  instagram?: string;
+  youtube?: string;
+  twitter?: string;
+  pinterest?: string;
+  tiktok?: string;
+  [key: string]: string | undefined;
+}
 
 const Footer = () => {
+  const [socialLinks, setSocialLinks] = useState<SocialLinks | null>(null);
+
+  useEffect(() => {
+    const fetchSocialLinks = async () => {
+      try {
+        const res = await fetch("/api/social-links");
+        const data = await res.json();
+        if (!data.error) {
+          setSocialLinks(data);
+        }
+      } catch (error) {
+        console.error("Error fetching social links:", error);
+      }
+    };
+    fetchSocialLinks();
+  }, []);
+
+  const socials = [
+    { label: "Facebook", field: "facebook", icon: Facebook },
+    { label: "Instagram", field: "instagram", icon: Instagram },
+    { label: "Youtube", field: "youtube", icon: Youtube },
+    { label: "Twitter", field: "twitter", icon: Twitter },
+    { label: "Pinterest", field: "pinterest", icon: Pin },
+    { label: "TikTok", field: "tiktok", icon: Music2 },
+  ];
+
+  const visibleSocials = socials.filter((s) => {
+    const link = socialLinks?.[s.field];
+    return typeof link === "string" && link.length > 0;
+  });
+
   return (
     <footer className="bg-cream pt-24 pb-12 border-t border-beige">
       <div className="container mx-auto px-6">
@@ -33,12 +64,15 @@ const Footer = () => {
             >
               Saveurs <span className="text-terracotta">&</span> Rentables
             </Link>
-            <div className="flex space-x-4 ">
-              {socials.map((social) => (
+            <div className="flex flex-wrap gap-4">
+              {visibleSocials.map((social) => (
                 <a
                   key={social.label}
-                  href={social.link}
+                  href={socialLinks?.[social.field] || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full border border-beige flex items-center justify-center text-[10px] font-bold text-darkBrown/60 hover:bg-terracotta hover:text-white hover:border-terracotta transition-all"
+                  title={social.label}
                 >
                   <social.icon className="size-4" />
                 </a>

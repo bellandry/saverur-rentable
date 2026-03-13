@@ -61,7 +61,7 @@ export default function AdminPaymentsPage() {
               Revenu Total
             </p>
             <p className="text-xl font-bold text-terracotta">
-              {totalRevenue.toFixed(2)}€
+              {totalRevenue.toFixed(2)}$
             </p>
           </div>
           <div className="w-10 h-10 bg-terracotta/10 rounded-full flex items-center justify-center">
@@ -155,7 +155,7 @@ export default function AdminPaymentsPage() {
                       {purchase.recipe.title}
                     </td>
                     <td className="px-6 py-4 font-bold text-terracotta">
-                      {purchase.amount.toFixed(2)}€
+                      {purchase.amount.toFixed(2)}$
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
                       {format(new Date(purchase.createdAt), "d MMMM yyyy", {

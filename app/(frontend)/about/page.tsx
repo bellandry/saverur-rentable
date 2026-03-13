@@ -53,7 +53,7 @@ export default async function AboutPage() {
       {/* Story Section */}
       <section className="py-24 bg-cream">
         <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row items-center gap-16 max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row lg:items-start gap-16 max-w-6xl mx-auto">
             <div className="flex-1 space-y-8">
               <span className="text-terracotta uppercase tracking-widest font-bold text-sm">
                 Une passion, une histoire
@@ -68,15 +68,17 @@ export default async function AboutPage() {
               />
             </div>
             {content.storyImage && (
-              <div className="flex-1 relative aspect-4/5 w-full max-w-md lg:max-w-none">
-                <div className="absolute inset-4 border-2 border-terracotta z-0 translate-x-4 translate-y-4" />
-                <div className="relative z-10 w-full h-full overflow-hidden shadow-2xl">
-                  <Image
-                    src={content.storyImage}
-                    alt={content.storyTitle}
-                    fill
-                    className="object-cover transition-transform duration-700 hover:scale-105"
-                  />
+              <div className="flex-1 lg:sticky lg:top-24 self-start">
+                <div className="relative h-36 md:h-full aspect-4/5 w-full max-w-md lg:max-w-none">
+                  <div className="absolute inset-4 border-2 border-terracotta z-0 translate-x-4 translate-y-4" />
+                  <div className="relative z-10 w-full h-full overflow-hidden shadow-2xl">
+                    <Image
+                      src={content.storyImage}
+                      alt={content.storyTitle}
+                      fill
+                      className="object-cover transition-transform duration-700 hover:scale-105"
+                    />
+                  </div>
                 </div>
               </div>
             )}
