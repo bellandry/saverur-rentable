@@ -2,6 +2,7 @@
 
 import { ImageUpload } from "@/components/admin/image-upload";
 import { TiptapEditor } from "@/components/admin/tiptap-editor";
+import { IconPicker } from "@/components/admin/icon-picker";
 import { ArrowLeft, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -318,7 +319,7 @@ export default function AboutContentPage() {
                   </button>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div>
+                  <div className="col-span-2 sm:col-span-1">
                     <label className="block text-sm text-gray-600 mb-1">
                       Titre
                     </label>
@@ -328,20 +329,13 @@ export default function AboutContentPage() {
                       onChange={(e) =>
                         updateValue(index, "title", e.target.value)
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none focus:ring-1 focus:ring-terracotta focus:border-terracotta"
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm text-gray-600 mb-1">
-                      Icône (Lucide-react name)
-                    </label>
-                    <input
-                      type="text"
+                  <div className="col-span-2">
+                    <IconPicker
                       value={value.icon}
-                      onChange={(e) =>
-                        updateValue(index, "icon", e.target.value)
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md outline-none"
+                      onChange={(newIcon) => updateValue(index, "icon", newIcon)}
                     />
                   </div>
                 </div>
