@@ -36,9 +36,9 @@ const Navbar = () => {
             : "bg-transparent py-6"
         } ${isMobileMenuOpen ? "bg-cream shadow-none" : ""}`}
       >
-        <div className="container mx-auto px-6 grid grid-cols-3 md:flex items-center justify-between">
-          {/* Mobile Menu Button */}
-          <div className="flex-1 flex items-center justify-start">
+        <div className="container mx-auto px-6 grid grid-cols-[1fr_auto_1fr] md:flex items-center justify-between">
+          {/* Mobile Menu Button - Left Column */}
+          <div className="flex items-center justify-start min-w-0">
             <div className="md:hidden relative z-110">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -77,8 +77,8 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Logo - Centered */}
-          <div className="flex-none text-center relative z-110">
+          {/* Logo - Centered Column */}
+          <div className="flex justify-center items-center text-center relative z-110">
             <Link
               href="/"
               className="text-2xl md:text-3xl font-serif font-bold tracking-tight focus:outline-none hover:opacity-80 transition-opacity whitespace-nowrap"
@@ -89,8 +89,8 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Right Links / Mobile Spacer */}
-          <div className="flex-1 flex items-center justify-end">
+          {/* Right Links / Mobile Spacer - Right Column */}
+          <div className="flex items-center justify-end">
             <div className="hidden md:flex items-center space-x-8">
               <Link
                 href="/about"
