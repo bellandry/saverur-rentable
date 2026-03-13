@@ -35,13 +35,13 @@ const Hero = ({
           <h1 className="text-5xl italic md:text-7xl font-serif font-semibold leading-[1.1] mb-8 drop-shadow-xl">
             {title}
           </h1>
-          <p className="text-xl md:text-2xl font-light text-white/90 mb-12 max-w-2xl mx-auto drop-shadow-lg">
+          <p className="text-lg md:text-xl font-light text-white/90 mb-12 max-w-2xl mx-auto drop-shadow-lg">
             {subtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href={buttonLink}
-              className="bg-terracotta text-white px-10 py-4 rounded-sm text-sm font-bold hover:bg-darkBrown transition-all duration-300 uppercase tracking-widest shadow-lg"
+              className="bg-terracotta text-white px-10 py-4 rounded-sm text-sm font-semibold hover:bg-darkBrown transition-all duration-300 uppercase tracking-widest shadow-lg"
             >
               {buttonText}
             </Link>
