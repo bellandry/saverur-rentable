@@ -1,6 +1,7 @@
 "use client";
 
 import { validateCoupon } from "@/app/admin/coupons/actions/coupon";
+import RecipeCard from "@/components/recipe/recipe-card";
 import { RecipeHero } from "@/components/recipe/recipe-hero";
 import { Button } from "@/components/ui/button";
 import { Recipe } from "@/types";
@@ -14,12 +15,16 @@ interface RecipeDetailProps {
   recipe: Recipe;
   hasPurchased: boolean;
   user?: User;
+  recommendationsByCategory?: Recipe[];
+  recommendationsByIngredients?: Recipe[];
 }
 
 export const RecipeDetail: React.FC<RecipeDetailProps> = ({
   recipe,
   hasPurchased,
   user,
+  recommendationsByCategory = [],
+  recommendationsByIngredients = [],
 }) => {
   const router = useRouter();
   const [isBuying, setIsBuying] = useState(false);
@@ -322,6 +327,45 @@ export const RecipeDetail: React.FC<RecipeDetailProps> = ({
             </span>
           </div>
         </section>
+      </div>
+
+      {/* Recommendations Sections */}
+      <div className="mt-32 space-y-24">
+        {recommendationsByCategory.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between mb-10">
+              <h3 className="text-3xl font-serif font-bold text-darkBrown">
+                Dans la même catégorie
+              </h3>
+              <Link
+                href={`/recipes/?category=${recipe.category.slug}`}
+                className="text-terracotta font-bold text-sm uppercase tracking-widest hover:text-darkBrown transition-colors"
+              >
+                Voir tout
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {recommendationsByCategory.map((r) => (
+                <RecipeCard key={r.id} recipe={r} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {recommendationsByIngredients.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between mb-10">
+              <h3 className="text-3xl font-serif font-bold text-darkBrown">
+                Avec les mêmes ingrédients
+              </h3>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {recommendationsByIngredients.map((r) => (
+                <RecipeCard key={r.id} recipe={r} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </main>
   );

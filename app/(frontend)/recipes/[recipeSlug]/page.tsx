@@ -1,5 +1,9 @@
 import { auth } from "@/lib/auth";
-import { getRecipeBySlug } from "@/lib/fetch-datas";
+import {
+  getRecipeBySlug,
+  getRecipesByCategory,
+  getRecipesByIngredients,
+} from "@/lib/fetch-datas";
 import prisma from "@/lib/prisma";
 import { Metadata } from "next";
 import { headers } from "next/headers";
@@ -65,6 +69,13 @@ const RecipeDetailPage = async ({
     hasPurchased = !!purchase;
   }
 
+  // Fetch recommended recipes
+  const [recommendationsByCategory, recommendationsByIngredients] =
+    await Promise.all([
+      getRecipesByCategory(recipe.categoryId, recipe.id, 4),
+      getRecipesByIngredients(recipe.ingredients || [], recipe.id, 4),
+    ]);
+
   // JSON-LD structured data for recipes
   const jsonLd = {
     "@context": "https://schema.org",
@@ -97,6 +108,8 @@ const RecipeDetailPage = async ({
         recipe={recipe}
         hasPurchased={hasPurchased}
         user={session?.user}
+        recommendationsByCategory={recommendationsByCategory}
+        recommendationsByIngredients={recommendationsByIngredients}
       />
     </>
   );
