@@ -16,6 +16,7 @@ export interface Recipe {
   isPremium: boolean;
   price?: number | null;
   category: Category;
+  categoryId: string;
   servings: number | null;
   ingredients?: string[];
   instructions?: string[];

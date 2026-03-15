@@ -27,14 +27,14 @@ const ContactForm = () => {
   }, [state]);
 
   return (
-    <section id="contact" className="py-32 bg-sage/10 relative overflow-hidden">
+    <section id="contact" className="py-32 bg-sage relative overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row border border-beige/50">
-          <div className="md:w-1/2 p-6 md:p-12 space-y-6 bg-beige/10">
+        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/20">
+          <div className="md:w-1/2 p-6 md:p-12 space-y-6 bg-cream/30">
             <h2 className="text-4xl font-serif text-darkBrown">
               Contactez-nous
             </h2>
-            <p className="text-darkBrown/60 font-light leading-relaxed">
+            <p className="text-darkBrown/70 font-light leading-relaxed">
               Vous avez une question, une suggestion ou souhaitez simplement
               nous dire bonjour ? N&apos;hésitez pas à nous envoyer un message
               via ce formulaire. Nous vous répondrons dans les plus brefs
@@ -49,10 +49,10 @@ const ContactForm = () => {
               ].map((item, idx) => (
                 <li
                   key={idx}
-                  className="flex items-center text-sm text-darkBrown/80 font-medium"
+                  className="flex items-center text-sm text-darkBrown/90 font-medium"
                 >
                   <svg
-                    className="w-5 h-5 mr-3 text-terracotta"
+                    className="w-5 h-5 mr-3 text-terracotta bg-white rounded-full p-0.5"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -68,7 +68,7 @@ const ContactForm = () => {
             </ul>
           </div>
 
-          <div className="md:w-1/2 p-6 md:p-12 bg-cream flex flex-col justify-center">
+          <div className="md:w-1/2 p-6 md:p-12 bg-white flex flex-col justify-center">
             <form action={formAction} className="space-y-4">
               <div>
                 <label
@@ -83,7 +83,7 @@ const ContactForm = () => {
                   name="name"
                   required
                   placeholder="Votre nom"
-                  className="w-full bg-white border border-beige py-3 px-4 focus:outline-none focus:border-terracotta transition-colors rounded-sm text-sm"
+                  className="w-full bg-cream/10 border border-beige py-3 px-4 focus:outline-none focus:border-terracotta transition-colors rounded-lg text-sm"
                 />
               </div>
               <div>
@@ -99,7 +99,7 @@ const ContactForm = () => {
                   name="email"
                   required
                   placeholder="vous@exemple.com"
-                  className="w-full bg-white border border-beige py-3 px-4 focus:outline-none focus:border-terracotta transition-colors rounded-sm text-sm"
+                  className="w-full bg-cream/10 border border-beige py-3 px-4 focus:outline-none focus:border-terracotta transition-colors rounded-lg text-sm"
                 />
               </div>
               <div>
@@ -115,14 +115,14 @@ const ContactForm = () => {
                   required
                   rows={4}
                   placeholder="Comment pouvons-nous vous aider ?"
-                  className="w-full bg-white border border-beige py-3 px-4 focus:outline-none focus:border-terracotta transition-colors rounded-sm text-sm resize-none"
+                  className="w-full bg-cream/10 border border-beige py-3 px-4 focus:outline-none focus:border-terracotta transition-colors rounded-lg text-sm resize-none"
                 />
               </div>
 
               <button
                 type="submit"
                 disabled={isPending}
-                className="w-full bg-terracotta text-white py-4 mt-2 rounded-sm text-sm font-bold shadow-lg shadow-terracotta/20 hover:bg-darkBrown disabled:opacity-70 disabled:cursor-not-allowed transition-all uppercase tracking-widest flex items-center justify-center gap-2"
+                className="w-full bg-terracotta text-white py-4 mt-2 rounded-lg text-sm font-bold shadow-lg shadow-terracotta/30 hover:bg-darkBrown disabled:opacity-70 disabled:cursor-not-allowed transition-all uppercase tracking-widest flex items-center justify-center gap-2"
               >
                 {isPending ? (
                   <>

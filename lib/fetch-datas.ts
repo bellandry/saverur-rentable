@@ -337,3 +337,53 @@ export async function getAboutPageContent(): Promise<AboutPageContent> {
     } as AboutPageContent;
   }
 }
+
+export async function getRecipesByCategory(
+  categoryId: string,
+  excludeId: string,
+  limit: number = 4,
+): Promise<Recipe[]> {
+  try {
+    const recipes = await prisma.recipe.findMany({
+      where: {
+        categoryId,
+        id: { not: excludeId },
+        status: "published",
+      },
+      take: limit,
+      include: { category: true },
+    });
+    return Promise.all(recipes.map(transformRecipe));
+  } catch (error) {
+    console.error("Error fetching recipes by category:", error);
+    return [];
+  }
+}
+
+export async function getRecipesByIngredients(
+  ingredients: string[],
+  excludeId: string,
+  limit: number = 4,
+): Promise<Recipe[]> {
+  try {
+    if (!ingredients || ingredients.length === 0) return [];
+
+    // Simple search for recipes containing any of the ingredients
+    // Ingredients are stored as JSON array in Prisma
+    const recipes = await prisma.recipe.findMany({
+      where: {
+        id: { not: excludeId },
+        status: "published",
+        OR: ingredients.map((ing) => ({
+          ingredients: { contains: ing },
+        })),
+      },
+      take: limit,
+      include: { category: true },
+    });
+    return Promise.all(recipes.map(transformRecipe));
+  } catch (error) {
+    console.error("Error fetching recipes by ingredients:", error);
+    return [];
+  }
+}
