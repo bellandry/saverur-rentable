@@ -1,3 +1,4 @@
+import { sendPurchaseConfirmationEmail } from "@/lib/mailer";
 import prisma from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 import { headers } from "next/headers";
@@ -57,9 +58,25 @@ export async function POST(request: Request) {
       console.log(
         `Purchase recorded for user ${metadata.userId} and recipe ${metadata.recipeId}`,
       );
+
+      // Fetch recipe details for the email
+      const recipe = await prisma.recipe.findUnique({
+        where: { id: metadata.recipeId },
+        select: { title: true, slug: true },
+      });
+
+      const userEmail = session.customer_details?.email;
+
+      if (recipe && userEmail) {
+        const recipeUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://saveurrentable.com"}/recipes/${recipe.slug}`;
+        await sendPurchaseConfirmationEmail(userEmail, recipe.title, recipeUrl);
+      }
     } catch (error) {
-      console.error("Error creating purchase record:", error);
-      return NextResponse.json({ error: "Database error" }, { status: 500 });
+      console.error("Error creating purchase record or sending email:", error);
+      return NextResponse.json(
+        { error: "Purchase processing error" },
+        { status: 500 },
+      );
     }
   }
 

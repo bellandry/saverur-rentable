@@ -29,7 +29,7 @@ export async function sendContactEmail(
       service: "gmail",
       auth: {
         user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS, // Utilisez un mot de passe d'application Google
+        pass: process.env.GMAIL_PASS,
       },
     });
 
