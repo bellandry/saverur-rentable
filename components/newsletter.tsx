@@ -27,7 +27,10 @@ const ContactForm = () => {
   }, [state]);
 
   return (
-    <section id="contact" className="py-32 bg-sage relative overflow-hidden">
+    <section
+      id="contact"
+      className="py-32 bg-orange-700 relative overflow-hidden"
+    >
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row border border-white/20">
           <div className="md:w-1/2 p-6 md:p-12 space-y-6 bg-cream/30">
