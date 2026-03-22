@@ -95,6 +95,9 @@ export default function AdminPaymentsPage() {
                   Recette
                 </th>
                 <th className="px-6 py-4 text-xs font-bold text-gray-600 uppercase tracking-wider">
+                  Promo
+                </th>
+                <th className="px-6 py-4 text-xs font-bold text-gray-600 uppercase tracking-wider">
                   Montant
                 </th>
                 <th className="px-6 py-4 text-xs font-bold text-gray-600 uppercase tracking-wider">
@@ -154,8 +157,33 @@ export default function AdminPaymentsPage() {
                     <td className="px-6 py-4 font-medium text-darkBrown">
                       {purchase.recipe.title}
                     </td>
-                    <td className="px-6 py-4 font-bold text-terracotta">
-                      {purchase.amount.toFixed(2)}$
+                    <td className="px-6 py-4">
+                      {purchase.coupon ? (
+                        <div className="flex flex-col">
+                          <span className="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-md border border-green-100 w-fit">
+                            {purchase.coupon.code}
+                          </span>
+                          <span className="text-[10px] text-gray-400">
+                            {purchase.coupon.discountType === "PERCENTAGE"
+                              ? `-${purchase.coupon.discountValue}%`
+                              : `-${purchase.coupon.discountValue}$`}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-gray-400">-</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col">
+                        <span className="font-bold text-terracotta">
+                          {purchase.amount.toFixed(2)}$
+                        </span>
+                        {purchase.coupon && (
+                          <span className="text-xs text-gray-400 line-through">
+                            {(purchase.recipe.price || 0).toFixed(2)}$
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
                       {format(new Date(purchase.createdAt), "d MMMM yyyy", {
