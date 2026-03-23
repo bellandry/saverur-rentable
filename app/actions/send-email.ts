@@ -35,7 +35,7 @@ export async function sendContactEmail(
 
     const mailOptions = {
       from: process.env.GMAIL_USER,
-      to: process.env.GMAIL_USER,
+      to: process.env.CONTACT_MAIL,
       replyTo: email,
       subject: `Nouveau message de contact de ${name}`,
       text: `Message de contact depuis Saveur Rentable\n\nNom: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
