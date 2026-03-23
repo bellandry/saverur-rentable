@@ -7,10 +7,13 @@ import {
   DollarSign,
   FolderOpen,
   Home,
+  Link2,
   LogOut,
   Menu,
+  MessageCircle,
   Settings,
   Ticket,
+  User,
   X,
 } from "lucide-react";
 import Link from "next/link";
@@ -32,8 +35,13 @@ export default function AdminLayoutClient({
     { name: "Coupons", href: "/admin/coupons", icon: Ticket },
     { name: "Paiements", href: "/admin/payments", icon: DollarSign },
     { name: "Page d'accueil", href: "/admin/homepage", icon: Settings },
-    { name: "À Propos", href: "/admin/about", icon: Settings },
-    { name: "Réseaux Sociaux", href: "/admin/social-links", icon: Settings },
+    { name: "À Propos", href: "/admin/about", icon: User },
+    { name: "Réseaux Sociaux", href: "/admin/social-links", icon: Link2 },
+    {
+      name: "Email de Bienvenue",
+      href: "/admin/email-settings",
+      icon: MessageCircle,
+    },
   ];
 
   const handleLogout = async () => {
