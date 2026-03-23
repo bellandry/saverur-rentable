@@ -259,7 +259,13 @@ export type PurchaseWithDetails = Purchase & {
   recipe: {
     title: string;
     slug: string;
+    price: number | null;
   };
+  coupon: {
+    code: string;
+    discountType: string;
+    discountValue: number;
+  } | null;
 };
 
 export async function getAllPurchases(): Promise<PurchaseWithDetails[]> {
@@ -275,6 +281,14 @@ export async function getAllPurchases(): Promise<PurchaseWithDetails[]> {
         select: {
           title: true,
           slug: true,
+          price: true,
+        },
+      },
+      coupon: {
+        select: {
+          code: true,
+          discountType: true,
+          discountValue: true,
         },
       },
     },
@@ -283,7 +297,7 @@ export async function getAllPurchases(): Promise<PurchaseWithDetails[]> {
     },
   });
 
-  return purchases as PurchaseWithDetails[];
+  return purchases as unknown as PurchaseWithDetails[];
 }
 
 export async function getAboutPageContent(): Promise<AboutPageContent> {

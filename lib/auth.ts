@@ -43,6 +43,22 @@ export const auth = betterAuth({
             data: user,
           };
         },
+        after: async (user) => {
+          try {
+            const { sendWelcomeEmail } = await import("./mailer");
+            const settings = await prisma.emailSettings.findFirst();
+
+            if (settings && user.email) {
+              await sendWelcomeEmail(
+                user.email,
+                settings.subject,
+                settings.content,
+              );
+            }
+          } catch (error) {
+            console.error("Failed to send welcome email in auth hook:", error);
+          }
+        },
       },
     },
   },

@@ -29,13 +29,13 @@ export async function sendContactEmail(
       service: "gmail",
       auth: {
         user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS, // Utilisez un mot de passe d'application Google
+        pass: process.env.GMAIL_PASS,
       },
     });
 
     const mailOptions = {
       from: process.env.GMAIL_USER,
-      to: process.env.GMAIL_USER,
+      to: process.env.CONTACT_MAIL,
       replyTo: email,
       subject: `Nouveau message de contact de ${name}`,
       text: `Message de contact depuis Saveur Rentable\n\nNom: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,

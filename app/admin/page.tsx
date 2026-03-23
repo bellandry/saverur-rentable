@@ -27,7 +27,7 @@ export default function AdminDashboard() {
         const categories = (await categoriesRes.json()) as Category[];
         const purchases = (await purchasesRes.json()) as Purchase[];
 
-        const totalRevenue = purchases.reduce((acc, p) => acc + p.amount, 0);
+        const totalRevenue = purchases.reduce((acc, p) => acc + (p.amount || 0), 0);
 
         setStats({
           recipes: recipes.length,
@@ -61,7 +61,7 @@ export default function AdminDashboard() {
       href: "/admin/categories",
     },
     {
-      name: "Paiements",
+      name: "Ventes (Revenu Net)",
       value: `${stats.purchases} (${stats.revenue.toFixed(2)}$)`,
       icon: CreditCard,
       color: "bg-darkBrown",
