@@ -275,3 +275,10 @@ model SiteSettings {
 
   updatedAt DateTime @updatedAt
 }
+
+model EmailSettings {
+  id        String   @id @default(cuid())
+  subject   String   @default("Bienvenue chez Saveur Rentable")
+  content   String   @default("<p>Bonjour,</p><p>Bienvenue sur notre plateforme !</p>")
+  updatedAt DateTime @updatedAt
+}
